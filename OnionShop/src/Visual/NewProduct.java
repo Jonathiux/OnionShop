@@ -1,20 +1,20 @@
 
-package Ventanas;
+package Visual;
 import java.awt.HeadlessException;
 import java.awt.Image;
 import java.io.*;
 import javax.swing.*;
-import logica.GestionImg;
-import logica.Producto;
-import logica.Vendedor;
+//import Logic.GestionImg;
+import Logic.Producto;
+import Logic.Usuario;
 
 public class NewProduct extends javax.swing.JFrame {
-    Vendedor vendedor = FVendedor.vendedor;
+    Usuario vendedor = FVendedor.vendedor;
     Producto producto;
     JFileChooser seleccionado = new JFileChooser();
     File archivo;
     byte[] bytesImg;
-    GestionImg gestion = new GestionImg();
+    //GestionImg gestion = new GestionImg();
     public NewProduct() {
         initComponents();
         this.setLocationRelativeTo(null);
@@ -190,7 +190,7 @@ public class NewProduct extends javax.swing.JFrame {
             archivo = seleccionado.getSelectedFile();
             if(archivo.canRead()){
                 if(archivo.getName().endsWith("jpg")||archivo.getName().endsWith("png")||archivo.getName().endsWith("gif")){
-                    bytesImg = gestion.AbrirImagen(archivo);
+                    //bytesImg = gestion.AbrirImagen(archivo);
                     jLImagen.setIcon(new ImageIcon(new ImageIcon(bytesImg).getImage().getScaledInstance(jLImagen.getWidth(), jLImagen.getHeight(), Image.SCALE_SMOOTH)));
                 }
             }
@@ -205,14 +205,20 @@ public class NewProduct extends javax.swing.JFrame {
         int cantidad = Integer.parseInt(jT_Cantidad.getText());
         double precio = Double.parseDouble(jT_Precio.getText());
         
-        producto = new Producto(cantidad,nombre,categoria,descripcion,locacion,precio);
+        producto = new Producto();
+        producto.setCantidad(cantidad);
+        producto.setNombre(nombre);
+        producto.setCategoria(categoria);
+        producto.setDescripcion(descripcion);
+        producto.setLocacion(locacion);
+        producto.setPrecio(precio);
         String mensaje = producto.agregarProducto(vendedor);
         
         try{
             archivo = seleccionado.getSelectedFile();
             if(archivo.getName().endsWith("jpg")||archivo.getName().endsWith("png")||archivo.getName().endsWith("gif")){
-                String respuesta;
-                respuesta = gestion.guardarImagen(bytesImg);
+                String respuesta = "";
+                //respuesta = gestion.guardarImagen(bytesImg);
                 if(respuesta != null){
                     //JOptionPane.showMessageDialog(null, respuesta);
                 } else{

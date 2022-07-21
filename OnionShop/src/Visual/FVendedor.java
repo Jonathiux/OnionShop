@@ -1,5 +1,5 @@
 
-package Ventanas;
+package Visual;
 
 import java.awt.Dimension;
 import java.awt.GridBagLayout;
@@ -11,22 +11,22 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
-import logica.Producto;
-import logica.Vendedor;
+import Logic.Producto;
+import Logic.Usuario;
 
 public class FVendedor extends javax.swing.JFrame {
-    public static Vendedor vendedor = loginVendedor.vend;
+    public static Usuario vendedor;
     
     public FVendedor() {
         initComponents();
         this.setLocationRelativeTo(null);
     }
-    private void crearPanelesProductos(Vendedor v){
-        if(v == null){
+    private void crearPanelesProductos(Usuario u){
+        if(u == null){
             System.out.println("El objeto esta vacio");
         }
         jPListaProductos.removeAll();
-        Producto[] producto = v.consultarProduFinales();
+        Producto[] producto = u.consultarProduFinales();
         java.awt.GridBagConstraints gridBagConstraints;
         JPanel PanelNuevo[] = new JPanel[producto.length];
         JLabel[] jLNombreProducto = new JLabel[producto.length];
@@ -77,7 +77,7 @@ public class FVendedor extends javax.swing.JFrame {
             jLImg[i].setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             jLImg[i].setPreferredSize(new Dimension(130,130));
             try {
-                img[i] = new ImageIcon(getClass().getResource("/Imagenes/"+Integer.toString(producto[i].getIdProducto())+".jpg"));
+                img[i] = new ImageIcon(getClass().getResource("/Imagenes/"+Integer.toString(producto[i].getIDProducto())+".jpg"));
                 jLImg[i].setIcon(new ImageIcon(img[i].getImage().getScaledInstance(130, 130, Image.SCALE_SMOOTH)));
                 gridBagConstraints = new java.awt.GridBagConstraints();
                 gridBagConstraints.gridx = 1;
@@ -218,7 +218,7 @@ public class FVendedor extends javax.swing.JFrame {
             jLDireccionAsig[i] = new JLabel();
             jLDireccionAsig[i].setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
             jLDireccionAsig[i].setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
-            jLDireccionAsig[i].setText(producto[i].getUbicacion());
+            jLDireccionAsig[i].setText(producto[i].getLocacion());
             jLDireccionAsig[i].setVerticalAlignment(javax.swing.SwingConstants.TOP);
             gridBagConstraints = new java.awt.GridBagConstraints();
             gridBagConstraints.gridx = 6;

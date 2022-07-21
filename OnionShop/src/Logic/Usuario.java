@@ -4,6 +4,7 @@ package Logic;
 import java.sql.*;
 import java.util.HashSet;
 import java.util.Set;
+import javax.swing.JOptionPane;
 
 public class Usuario {
     private int idUsuario, telefono;
@@ -122,6 +123,61 @@ public class Usuario {
         }
         return mensaje;
     }
-    //QUibu
     
+    private int totalProductos(){
+        int totalProducts=0;
+        Conexion conex = new Conexion();
+        if(conex.conectar()!=null){
+            String consultaSQL = "select idproducto from vendedor_producto where idusuario=?";
+            try{
+               PreparedStatement ps = conex.getConex().prepareStatement(consultaSQL);
+                ps.setInt(1, idUsuario);
+                ResultSet rs = ps.executeQuery();
+                while(rs.next()){
+                    totalProducts++;
+                }
+                conex.desconectar(); 
+            } catch(SQLException ex){
+            
+            }
+        }
+        return totalProducts;
+    }
+    
+    public Producto[] consultarProduFinales(){
+        Conexion conex = new Conexion();
+        Producto idsProductos[] = new Producto[totalProductos()];
+        if(conex.conectar()==null){
+        } else{
+            String consultaSQL = "select * from vendedor_producto as v_p inner join producto as p on v_p.idProducto = p.idproducto where v_p.idusuario=?";
+            try{
+                PreparedStatement ps = conex.getConex().prepareStatement(consultaSQL);
+                ps.setInt(1, idUsuario);
+                ResultSet rs = ps.executeQuery();
+                int i =0;
+                while(rs.next()){
+                    int idproducto = (rs.getInt("idproducto"));
+                    int cantidad = (rs.getInt("cantidad"));
+                    String nombre = (rs.getString("nombre"));
+                    String categoria = (rs.getString("categoria"));
+                    String descripcion = (rs.getString("descripcion"));
+                    String ubicacion = (rs.getString("ubicacion"));
+                    double precio = (rs.getDouble("precio"));
+                    idsProductos[i] = new Producto();
+                    idsProductos[i].setIDProducto(cantidad);
+                    idsProductos[i].setNombre(nombre);
+                    idsProductos[i].setCategoria(categoria);
+                    idsProductos[i].setDescripcion(descripcion);
+                    idsProductos[i].setLocacion(ubicacion);
+                    idsProductos[i].setPrecio(precio);
+                    idsProductos[i].setIDProducto(idproducto);
+                    i++;
+                }
+                conex.desconectar();
+            } catch(SQLException ex) {
+                System.out.println("Error al intentar consultar " + ex.getMessage()); 
+            }
+        }
+        return idsProductos;
+    }
 }
