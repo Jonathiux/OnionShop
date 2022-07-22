@@ -158,7 +158,7 @@ public class FLogin extends javax.swing.JFrame {
         // TODO add your handling code here:
         Inicio inicio = new Inicio();
         usuario.setNombUsuario(jtfUsuario.getText());
-        usuario.setContraseña(jpfContraseña.getPassword().toString());
+        usuario.setContraseña(jpfContraseña.getText());
         if(usuario.Login().equals("")){
             this.setVisible(false);
             inicio.setVisible(true);

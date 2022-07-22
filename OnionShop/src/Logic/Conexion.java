@@ -4,7 +4,7 @@ import java.sql.*;
 
 public class Conexion {
 private String ip="localhost:3306";
-    private String db="";
+    private String db="onionTech";
     private String usuario="root";
     private String password="";
     private String url="jdbc:mysql://"+ip+"/"+db;
