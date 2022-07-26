@@ -162,7 +162,8 @@ public class FLogin extends javax.swing.JFrame {
         if(usuario.Login().equals("")){
             this.setVisible(false);
             inicio.setVisible(true);
-            inicio.setUsu(jtfUsuario.getText());
+            inicio.usuario = this.usuario;
+            FVendedor.vendedor = this.usuario;
         }else{
             jlError.setText(usuario.Login());
         }

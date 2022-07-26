@@ -26,6 +26,53 @@ public class FRegistrarse extends javax.swing.JFrame {
         jcbDia.setModel(Dias());
     }
 
+    public boolean verificardatos(){
+        boolean v = false;
+        if(!"".equals(jtfNombre.getText())){
+            if(!"".equals(jtfApellidos.getText())){
+                if(!"".equals(jtfDireccion.getText())){
+                    if(!"".equals(jtfTelefono.getText())){
+                        try{
+                        usuario.setTelefono(Integer.parseInt(jtfTelefono.getText())); 
+                        if(!"".equals(jtfUsuario.getText())){
+                            if (!"".equals(jpfContraseña.getText())){
+                                v = true;
+                            }else{
+                               jpfContraseña.setBackground(new java.awt.Color(255,255,204));
+                               jlerror1.setText("Campo obligatorio");
+                            }
+                        }else{
+                        jtfUsuario.setBackground(new java.awt.Color(255,255,204));
+                        jlerror1.setText("Campo obligatorio");
+                        v = false;
+                        }
+                        }catch(NumberFormatException ex){
+                         jtfTelefono.setBackground(new java.awt.Color(255,255,204));
+                         jlerror1.setText("Utilice valores númericos");
+                         v = false;
+                        }
+                    }else{
+                        jtfTelefono.setBackground(new java.awt.Color(255,255,204));
+                        jlerror1.setText("Campo obligatorio");
+                        v = false;
+                    }
+                }else{
+                    jtfDireccion.setBackground(new java.awt.Color(255,255,204));
+                    jlerror1.setText("Campo obligatorio");
+                    v = false;
+                }
+            }else{
+                jtfApellidos.setBackground(new java.awt.Color(255,255,204));
+                jlerror1.setText("Campo obligatorio");
+                v = false;
+            }
+        }else{
+        jtfNombre.setBackground(new java.awt.Color(255,255,204));
+        jlerror1.setText("Campo obligatorio");
+        v = false;
+        }
+        return v;
+    }
     private DefaultComboBoxModel Años(){
         DefaultComboBoxModel año = new DefaultComboBoxModel();
         for(int num=1980;num<2005;num+=1){
@@ -349,11 +396,14 @@ public class FRegistrarse extends javax.swing.JFrame {
         usuario.setFechana(jcbAño.getSelectedItem()+"/"+jcbMes.getSelectedItem()+"/"+jcbDia.getSelectedItem());
         usuario.setNombUsuario(jtfUsuario.getText());
         usuario.setContraseña(jpfContraseña.getPassword().toString());
+        if(verificardatos()== true){
+        jlerror1.setText(usuario.RegistrarUsuario());
         fl.setUsu(jtfUsuario.getText());
         fl.setContra(jpfContraseña.getText());
         fl.returndatos();
         fl.setVisible(true);
         this.setVisible(false);
+        }
     }//GEN-LAST:event_jbRegistrarActionPerformed
 
     /**

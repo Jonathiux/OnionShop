@@ -81,21 +81,35 @@ public class Usuario {
         if(conexion.conectar()==null){
             mensaje="No se ha podido conectar";
         }else{
-            String consultaSQL ="insert into usuario (?,?,?,?,?,?)";
+            String consultaSQL1 ="select IDusuario from usuario";
+            String consultaSQL ="insert into usuario values(?,?,?,?,?,?,?,?)";
             try{
+                PreparedStatement ps2 = conexion.getConex().prepareStatement(consultaSQL1);
+                ResultSet rs = ps2.executeQuery();
+                if(rs.last()){
+                idUsuario = rs.getRow();
+                idUsuario = idUsuario+1;
                 PreparedStatement ps = conexion.getConex().prepareStatement(consultaSQL);
-                ps.setString(1, nombre);
-                ps.setString(2, apellidos);
-                ps.setString(3, direccion);
-                ps.setInt(4, telefono);
-                ps.setString(5, nombUsuario);
-                ps.setString(6, contraseña);
+                ps.setInt(1, idUsuario);
+                ps.setString(2, nombre);
+                ps.setString(3, apellidos);
+                ps.setString(4, direccion);
+                ps.setString(5, fechana);
+                ps.setInt(6, telefono);
+                ps.setString(7, nombUsuario);
+                ps.setString(8, contraseña);
                 ps.executeUpdate();
                 mensaje="Usuario registrado";
+                System.out.println(nombre + apellidos + direccion + fechana + telefono + nombUsuario + contraseña);
                 conexion.desconectar();
+                }else{
+                }
             }catch(SQLException ex){
                 mensaje="Error al registrar" +ex.getMessage();
+                System.out.println(mensaje);
+                System.out.println(nombre + apellidos + direccion + fechana + telefono + nombUsuario + contraseña);
             }
+            
         }
         return mensaje;
     }
@@ -107,7 +121,7 @@ public class Usuario {
         if(conexion.conectar()==null){
             mensaje="No se ha podido conectar";
         }else{
-            String consultaSQL = "select nombreUsuario, contrasena from usuario where nombreusuario=?";
+            String consultaSQL = "select nombreUsuario, contrasena, idusuario from usuario where nombreusuario=?";
             try{
                 PreparedStatement ps = conexion.getConex().prepareStatement(consultaSQL);
                 ps.setString(1, nombUsuario);
@@ -117,6 +131,7 @@ public class Usuario {
                 }
                 if(contraseña.equals(contraseña2)){
                     System.out.println("Coinciden");
+                    idUsuario = rs.getInt("IDUsuario");
                 }else{
                     mensaje="Usuario o contraseña Inconrrectos";
                     System.out.println(contraseña+" "+contraseña2);

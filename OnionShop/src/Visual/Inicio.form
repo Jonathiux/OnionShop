@@ -275,6 +275,9 @@
             </Property>
             <Property name="text" type="java.lang.String" value="Sesi&#xf3;n Vendedor"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jbSesionVActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jbCerrarS">
           <Properties>

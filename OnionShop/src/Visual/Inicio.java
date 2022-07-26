@@ -12,7 +12,7 @@ import Logic.Usuario;
  */
 public class Inicio extends javax.swing.JFrame {
 
-    Usuario usuario = new Usuario();
+    Usuario usuario;
     private String usu;
     public Inicio() {
         initComponents();
@@ -181,6 +181,11 @@ public class Inicio extends javax.swing.JFrame {
 
         jbSesionV.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jbSesionV.setText("Sesión Vendedor");
+        jbSesionV.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbSesionVActionPerformed(evt);
+            }
+        });
 
         jbCerrarS.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jbCerrarS.setText("Cerrar sesión");
@@ -381,8 +386,18 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jbAgregarActionPerformed
 
     private void jbCerrarSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCerrarSActionPerformed
-       
+        FLogin fl = new FLogin();
+        this.setVisible(false);
+        fl.setVisible(true);
+        fl.usuario = new Usuario();
     }//GEN-LAST:event_jbCerrarSActionPerformed
+
+    private void jbSesionVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSesionVActionPerformed
+        // TODO add your handling code here:
+        FVendedor fv = new FVendedor();
+        fv.setVisible(true);
+        this.setVisible(false);
+    }//GEN-LAST:event_jbSesionVActionPerformed
 
     /**
      * @param args the command line arguments
