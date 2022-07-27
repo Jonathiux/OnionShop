@@ -1,6 +1,6 @@
 
 package Visual;
-import java.awt.HeadlessException;
+import Logic.GestionImg;
 import java.awt.Image;
 import java.io.*;
 import javax.swing.*;
@@ -36,7 +36,6 @@ public class NewProduct extends javax.swing.JFrame {
         jLabel6 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jT_Descripcion = new javax.swing.JTextArea();
-        jT_Categoria = new javax.swing.JTextField();
         jT_Locacion = new javax.swing.JTextField();
         jT_Precio = new javax.swing.JTextField();
         jLabel7 = new javax.swing.JLabel();
@@ -44,12 +43,15 @@ public class NewProduct extends javax.swing.JFrame {
         jLabel9 = new javax.swing.JLabel();
         jBAbrirArchivo = new javax.swing.JButton();
         jB_guardarProducto = new javax.swing.JButton();
+        jC_Categoria = new javax.swing.JComboBox<>();
 
         jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
         jLabel1.setText("Nombre del Producto:");
 
         jLabel2.setText("Cantidad:");
+
+        jT_Cantidad.setMaximumSize(new java.awt.Dimension(200, 200));
 
         jLabel3.setText("Categoria: ");
 
@@ -88,6 +90,10 @@ public class NewProduct extends javax.swing.JFrame {
             }
         });
 
+        jC_Categoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar Categoria...", "Electrodomésticos", "Consolas y Videojuegos", "Ropa", "Deportes", "Hogar", "Juguetería" }));
+        jC_Categoria.setMinimumSize(new java.awt.Dimension(142, 25));
+        jC_Categoria.setPreferredSize(new java.awt.Dimension(145, 25));
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -114,15 +120,15 @@ public class NewProduct extends javax.swing.JFrame {
                                         .addComponent(jLImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(jBAbrirArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addComponent(jT_Precio, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
                                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(jT_Categoria, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jT_nombreProducto, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, 120, Short.MAX_VALUE)
-                                            .addComponent(jT_Cantidad, javax.swing.GroupLayout.Alignment.LEADING))
+                                            .addComponent(jC_Categoria, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                            .addComponent(jT_nombreProducto, javax.swing.GroupLayout.Alignment.LEADING)
+                                            .addComponent(jT_Cantidad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                                         .addGap(68, 68, 68)
-                                        .addComponent(jB_guardarProducto)))
-                                .addGap(0, 80, Short.MAX_VALUE)))))
+                                        .addComponent(jB_guardarProducto))
+                                    .addComponent(jT_Precio, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(0, 58, Short.MAX_VALUE)))))
                 .addGap(18, 18, 18))
         );
         jPanel1Layout.setVerticalGroup(
@@ -140,9 +146,9 @@ public class NewProduct extends javax.swing.JFrame {
                     .addComponent(jLabel2)
                     .addComponent(jT_Cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel3)
-                    .addComponent(jT_Categoria, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jC_Categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel4)
@@ -186,54 +192,102 @@ public class NewProduct extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBAbrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAbrirArchivoActionPerformed
+        GestionImg gestion = new GestionImg();
         if(seleccionado.showDialog(this, "ABRIR ARCHIVO") == JFileChooser.APPROVE_OPTION){
             archivo = seleccionado.getSelectedFile();
             if(archivo.canRead()){
                 if(archivo.getName().endsWith("jpg")||archivo.getName().endsWith("png")||archivo.getName().endsWith("gif")){
-                    //bytesImg = gestion.AbrirImagen(archivo);
+                    bytesImg = gestion.AbrirImagen(archivo);
                     jLImagen.setIcon(new ImageIcon(new ImageIcon(bytesImg).getImage().getScaledInstance(jLImagen.getWidth(), jLImagen.getHeight(), Image.SCALE_SMOOTH)));
                 }
             }
         }
     }//GEN-LAST:event_jBAbrirArchivoActionPerformed
-
-    private void jB_guardarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jB_guardarProductoActionPerformed
-        String nombre = jT_nombreProducto.getText();
-        String categoria = jT_Categoria.getText();
-        String descripcion = jT_Descripcion.getText();
-        String locacion = jT_Locacion.getText();
-        int cantidad = Integer.parseInt(jT_Cantidad.getText());
-        double precio = Double.parseDouble(jT_Precio.getText());
-        
-        producto = new Producto();
-        producto.setCantidad(cantidad);
-        producto.setNombre(nombre);
-        producto.setCategoria(categoria);
-        producto.setDescripcion(descripcion);
-        producto.setLocacion(locacion);
-        producto.setPrecio(precio);
-        String mensaje = producto.agregarProducto(vendedor);
-        
+    
+    public boolean isNumero(String num){
         try{
-            archivo = seleccionado.getSelectedFile();
-            if(archivo.getName().endsWith("jpg")||archivo.getName().endsWith("png")||archivo.getName().endsWith("gif")){
-                String respuesta = "";
-                //respuesta = gestion.guardarImagen(bytesImg);
-                if(respuesta != null){
-                    //JOptionPane.showMessageDialog(null, respuesta);
-                } else{
-                    //JOptionPane.showMessageDialog(null, "Error al Guardar Imagen...");
-                }
-            }
-        } catch(HeadlessException | java.lang.NullPointerException ex){
+            int numero =Integer.parseInt(num);
+            return false;
+        }catch(NumberFormatException e){
+            return true;
         }
-        jT_nombreProducto.setText("");
-        jT_Categoria.setText("");
-        jT_Descripcion.setText("");
-        jT_Locacion.setText("");
-        jT_Cantidad.setText("");
-        jT_Precio.setText("");
-        jLImagen.setIcon(null);
+    }
+    
+    private void jB_guardarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jB_guardarProductoActionPerformed
+        boolean band = true;
+        
+        //verifica las casillas numericas tenga valor numerico y no esten vacioas
+        if("".equals(jT_Cantidad.getText())||jT_Cantidad.getText().isBlank()||isNumero(jT_Cantidad.getText())){
+            jT_Cantidad.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+            band = false;
+        } else{
+            jT_Cantidad.setBorder(null);
+        }
+        if("".equals(jT_Precio.getText())||jT_Precio.getText().isBlank()||isNumero(jT_Precio.getText())){
+            jT_Precio.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+            band = false;
+        }else{
+            jT_Precio.setBorder(null);
+        }
+        //verifica las demas casillas que tengan valor
+        if(jT_nombreProducto.getText().isBlank()){
+            jT_nombreProducto.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+            band = false;
+        }else{
+            jT_nombreProducto.setBorder(null);
+        }
+        if(jC_Categoria.getSelectedIndex()==0){
+            jC_Categoria.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+            band = false;
+        }else{
+            jC_Categoria.setBorder(null);
+        }
+        if(jT_Descripcion.getText().isBlank()){
+            jT_Descripcion.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+            band = false;
+        }else{
+            jT_Descripcion.setBorder(null);
+        }
+        if(jT_Locacion.getText().isBlank()){
+            jT_Locacion.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+            band = false;
+        }else{
+            jT_Locacion.setBorder(null);
+        }
+        if(jLImagen.getIcon()==null){
+            jLImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+            band = false;
+        }else{
+            jLImagen.setBorder(null);
+        }
+        if(!archivo.getName().endsWith("jpg")){
+                JOptionPane.showMessageDialog(null, "Solo acepta imagenes con formato \"jpg\"");
+                jLImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
+                band = false;
+            }
+        
+        if(band){
+            producto = new Producto();
+            producto.setCantidad(Integer.parseInt(jT_Cantidad.getText()));
+            producto.setNombre(jT_nombreProducto.getText());
+            producto.setCategoria(jC_Categoria.getSelectedItem().toString());
+            producto.setDescripcion(jT_Descripcion.getText());
+            producto.setLocacion(jT_Locacion.getText());
+            producto.setPrecio(Double.parseDouble(jT_Precio.getText()));
+            if("Guardar Producto".equals(jB_guardarProducto.getText())){
+                producto.agregarProducto(vendedor);
+            }else{
+                
+            }
+            producto.guardarimagen(bytesImg);
+            jT_nombreProducto.setText("");
+            jC_Categoria.setSelectedIndex(0);
+            jT_Descripcion.setText("");
+            jT_Locacion.setText("");
+            jT_Cantidad.setText("");
+            jT_Precio.setText("");
+            jLImagen.setIcon(null);
+        }
     }//GEN-LAST:event_jB_guardarProductoActionPerformed
 
     
@@ -272,7 +326,8 @@ public class NewProduct extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton jBAbrirArchivo;
-    private javax.swing.JButton jB_guardarProducto;
+    public javax.swing.JButton jB_guardarProducto;
+    private javax.swing.JComboBox<String> jC_Categoria;
     private javax.swing.JLabel jLImagen;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
@@ -285,7 +340,6 @@ public class NewProduct extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jT_Cantidad;
-    private javax.swing.JTextField jT_Categoria;
     private javax.swing.JTextArea jT_Descripcion;
     private javax.swing.JTextField jT_Locacion;
     private javax.swing.JTextField jT_Precio;

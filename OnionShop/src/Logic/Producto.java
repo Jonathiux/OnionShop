@@ -1,4 +1,5 @@
 package Logic;
+import java.awt.HeadlessException;
 import java.sql.*;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
@@ -225,5 +226,23 @@ public class Producto {
             }
         }
         return mensaje;
+    }
+    
+    public void guardarimagen(byte[] bytesImg){
+        GestionImg gestion = new GestionImg();
+        try{
+                //archivo = seleccionado.getSelectedFile();
+                if(true){
+                    String respuesta = "";
+                    respuesta = gestion.guardarImagen(bytesImg,this.IDProducto);
+                    if(respuesta != null){
+                        System.out.println(respuesta);
+                    } else{
+                        System.out.println("Error al Guardar Imagen...");
+                    }
+                }
+            } catch(HeadlessException | java.lang.NullPointerException ex){
+                System.out.println(ex);
+            }
     }
 }

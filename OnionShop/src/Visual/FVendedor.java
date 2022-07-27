@@ -13,14 +13,29 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import Logic.Producto;
 import Logic.Usuario;
+import java.awt.Component;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import javax.swing.UIManager;
+import javax.swing.UnsupportedLookAndFeelException;
 
 public class FVendedor extends javax.swing.JFrame {
     public static Usuario vendedor;
     
     public FVendedor() {
+        fondo();
         initComponents();
         this.setLocationRelativeTo(null);
     }
+    static void fondo(){
+            try{
+                UIManager.setLookAndFeel("com.jtattoo.plaf.bernstein.BernsteinLookAndFeel");
+            } catch(ClassNotFoundException ex){
+            } catch(InstantiationException ex){
+            } catch(IllegalAccessException ex){
+            } catch(UnsupportedLookAndFeelException ex){
+            }
+        }
     private void crearPanelesProductos(Usuario u){
         if(u == null){
             System.out.println("El objeto esta vacio");
@@ -52,6 +67,7 @@ public class FVendedor extends javax.swing.JFrame {
             
             //Creacion del panel
             PanelNuevo[i] = new JPanel();
+            PanelNuevo[i].setName(Integer.toString(producto[i].getIDProducto()));
             PanelNuevo[i].setPreferredSize(new Dimension(600,200));
             PanelNuevo[i].setMinimumSize(new Dimension(500,50));
             PanelNuevo[i].setLayout(new GridBagLayout());
@@ -245,6 +261,7 @@ public class FVendedor extends javax.swing.JFrame {
             //Boton Actualizar Producto
             jBActualizarProducto[i] = new JButton(); 
             jBActualizarProducto[i].setText("Actualizar producto");
+            actualizarProducto(PanelNuevo[i],jBActualizarProducto[i]);
             gridBagConstraints = new java.awt.GridBagConstraints();
             gridBagConstraints.gridx = 1;
             gridBagConstraints.gridy = 5;
@@ -253,6 +270,7 @@ public class FVendedor extends javax.swing.JFrame {
             //Boton Eliminar Producto
             jBEliminarProducto[i] = new JButton();
             jBEliminarProducto[i].setText("Eliminar Producto");
+            eliminacionPanel(PanelNuevo[i], jBEliminarProducto[i]);
             gridBagConstraints = new java.awt.GridBagConstraints();
             gridBagConstraints.gridx = 0;
             gridBagConstraints.gridy = 5;
@@ -287,27 +305,17 @@ public class FVendedor extends javax.swing.JFrame {
         jPListaProductos = new javax.swing.JPanel();
         jPNotificaciones = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        barraMenu = new javax.swing.JMenuBar();
+        menu = new javax.swing.JMenu();
+        comprador = new javax.swing.JMenuItem();
+        closeSesion = new javax.swing.JMenuItem();
+        salir = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(700, 700));
-        addFocusListener(new java.awt.event.FocusAdapter() {
-            public void focusGained(java.awt.event.FocusEvent evt) {
-                formFocusGained(evt);
-            }
-        });
-        addWindowFocusListener(new java.awt.event.WindowFocusListener() {
-            public void windowGainedFocus(java.awt.event.WindowEvent evt) {
-                formWindowGainedFocus(evt);
-            }
-            public void windowLostFocus(java.awt.event.WindowEvent evt) {
-            }
-        });
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
-            }
-            public void windowOpened(java.awt.event.WindowEvent evt) {
-                formWindowOpened(evt);
             }
         });
 
@@ -326,17 +334,17 @@ public class FVendedor extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+            .addGroup(jPanel2Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addContainerGap())
+            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel2Layout.createSequentialGroup()
                 .addComponent(jLabel1)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(19, 19, 19)
                 .addComponent(jLNombre)
                 .addGap(0, 11, Short.MAX_VALUE))
         );
@@ -391,7 +399,7 @@ public class FVendedor extends javax.swing.JFrame {
             jPNotificacionesLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPNotificacionesLayout.createSequentialGroup()
                 .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 506, Short.MAX_VALUE))
+                .addGap(0, 477, Short.MAX_VALUE))
         );
 
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -431,6 +439,39 @@ public class FVendedor extends javax.swing.JFrame {
 
         jPanel1.add(jPanel3, java.awt.BorderLayout.CENTER);
 
+        barraMenu.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+
+        menu.setBorder(new javax.swing.border.MatteBorder(null));
+        menu.setText("Menu");
+
+        comprador.setText("Sesion Comprador");
+        comprador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                compradorActionPerformed(evt);
+            }
+        });
+        menu.add(comprador);
+
+        closeSesion.setText("Cerrar Sesion");
+        closeSesion.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                closeSesionActionPerformed(evt);
+            }
+        });
+        menu.add(closeSesion);
+
+        salir.setText("Salir");
+        salir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                salirActionPerformed(evt);
+            }
+        });
+        menu.add(salir);
+
+        barraMenu.add(menu);
+
+        setJMenuBar(barraMenu);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -439,12 +480,36 @@ public class FVendedor extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 679, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
+    private void eliminacionPanel(JPanel panel,JButton boton){
+        ActionListener oyenteBoton = new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                System.out.println(panel.getName());
+            }
+        };
+        boton.addActionListener(oyenteBoton);
+    }
+    private void actualizarProducto(JPanel panel,JButton boton){
+        Producto p =new Producto();
+        NewProduct np = new NewProduct();
+        ActionListener oyenteBoton = new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                Component[] componente = new Component[50];
+                componente = panel.getComponents();
+                np.setVisible(true);
+                np.jB_guardarProducto.setText("Actualizar Producto");
+                p.setIDProducto(Integer.parseInt(panel.getName()));
+                np.producto = p;
+            }
+        };
+        boton.addActionListener(oyenteBoton);
+    }
     private void jB_productoNuevoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jB_productoNuevoActionPerformed
         NewProduct vProduct = new NewProduct();
         vProduct.setVisible(true);
@@ -455,21 +520,26 @@ public class FVendedor extends javax.swing.JFrame {
         JOptionPane.showConfirmDialog(null, "Deseas eliminar todo?");
     }//GEN-LAST:event_jB_eliminarTodoActionPerformed
 
-    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        crearPanelesProductos(vendedor);
-    }//GEN-LAST:event_formWindowOpened
-
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
         crearPanelesProductos(vendedor);
     }//GEN-LAST:event_formWindowActivated
 
-    private void formWindowGainedFocus(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowGainedFocus
-        crearPanelesProductos(vendedor);
-    }//GEN-LAST:event_formWindowGainedFocus
+    private void closeSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeSesionActionPerformed
+        vendedor=null;
+        FLogin login = new FLogin();
+        this.setVisible(false);
+        login.setVisible(true);
+    }//GEN-LAST:event_closeSesionActionPerformed
 
-    private void formFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_formFocusGained
-        crearPanelesProductos(vendedor);
-    }//GEN-LAST:event_formFocusGained
+    private void compradorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_compradorActionPerformed
+        Inicio comprador1 = new Inicio();
+        this.setVisible(false);
+        comprador1.setVisible(true);
+    }//GEN-LAST:event_compradorActionPerformed
+
+    private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_salirActionPerformed
 
      
     public static void main(String args[]) {
@@ -503,6 +573,9 @@ public class FVendedor extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenuBar barraMenu;
+    private javax.swing.JMenuItem closeSesion;
+    private javax.swing.JMenuItem comprador;
     private javax.swing.JButton jB_eliminarTodo;
     private javax.swing.JButton jB_productoNuevo;
     private javax.swing.JLabel jLNombre;
@@ -515,5 +588,7 @@ public class FVendedor extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
     private javax.swing.JScrollPane jScrollPane2;
+    private javax.swing.JMenu menu;
+    private javax.swing.JMenuItem salir;
     // End of variables declaration//GEN-END:variables
 }

@@ -190,7 +190,7 @@ public class Usuario {
                     String ubicacion = (rs.getString("ubicacion"));
                     double precio = (rs.getDouble("precio"));
                     idsProductos[i] = new Producto();
-                    idsProductos[i].setIDProducto(cantidad);
+                    idsProductos[i].setCantidad(cantidad);
                     idsProductos[i].setNombre(nombre);
                     idsProductos[i].setCategoria(categoria);
                     idsProductos[i].setDescripcion(descripcion);

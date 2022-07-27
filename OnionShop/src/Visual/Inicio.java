@@ -353,7 +353,8 @@ public class Inicio extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jbCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCarritoActionPerformed
-        // TODO add your handling code here:
+        carritoCompras carrito = new carritoCompras();
+        carrito.setVisible(true);
     }//GEN-LAST:event_jbCarritoActionPerformed
 
     private void jtfBuscadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtfBuscadorMouseClicked
@@ -396,6 +397,7 @@ public class Inicio extends javax.swing.JFrame {
         // TODO add your handling code here:
         FVendedor fv = new FVendedor();
         fv.setVisible(true);
+        fv.setExtendedState(MAXIMIZED_BOTH);
         this.setVisible(false);
     }//GEN-LAST:event_jbSesionVActionPerformed
 

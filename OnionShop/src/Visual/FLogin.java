@@ -163,6 +163,7 @@ public class FLogin extends javax.swing.JFrame {
             this.setVisible(false);
             inicio.setVisible(true);
             inicio.usuario = this.usuario;
+            inicio.setExtendedState(MAXIMIZED_BOTH);
             FVendedor.vendedor = this.usuario;
         }else{
             jlError.setText(usuario.Login());
