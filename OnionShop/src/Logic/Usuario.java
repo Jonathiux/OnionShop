@@ -150,6 +150,67 @@ public class Usuario {
         return mensaje;
     }
     
+    private int tproductos (){
+        int total=0;
+        Conexion conexion = new Conexion();
+        if(conexion.conectar()==null){
+            System.out.println("No se ha podido conectar");
+        }else{
+            String consultaSQL = "select p.idproducto from producto p join vendedor_producto vp on p.idproducto=vp.idproducto where vp.idusuario<>?";
+            try{
+               PreparedStatement ps = conexion.getConex().prepareStatement(consultaSQL);
+               ps.setInt(1, idUsuario);
+               ResultSet rs = ps.executeQuery();
+               while(rs.next()){
+                   total++;
+               }
+               conexion.desconectar();
+            }catch(SQLException ex){
+                
+            }
+        }
+        return total;
+        }
+    
+    public Producto[] datosproductos(){
+        Conexion conexion = new Conexion();
+        Producto productos[]= new Producto[tproductos()];
+            if(conexion.conectar()==null){
+                System.out.println("No se ha podido conectar");
+            }else{
+                String consultaSQL = "select p.* from producto p join vendedor_producto vp on p.idproducto=vp.idproducto where vp.idusuario<>?";
+                try{
+                PreparedStatement ps = conexion.getConex().prepareStatement(consultaSQL);
+                ps.setInt(1, idUsuario);
+                ResultSet rs = ps.executeQuery();
+                int a=0;
+                while(rs.next()){
+                    int idproducto = rs.getInt("idproducto");
+                    int cantidad = rs.getInt("cantidad");
+                    double precio = rs.getDouble("precio");
+                    String nombre = rs.getString("nombre");
+                    String categoria = rs.getString("categoria");
+                    String ubicacion = rs.getString("ubicacion");
+                    String descripcion = rs.getString("descripcion");
+                    productos[a]=new Producto();
+                    productos[a].setNombre(nombre);
+                    productos[a].setIDProducto(idproducto);
+                    productos[a].setCategoria(categoria);
+                    productos[a].setCantidad(cantidad);
+                    productos[a].setPrecio(precio);
+                    productos[a].setLocacion(ubicacion);
+                    productos[a].setDescripcion(descripcion);
+                    a++;
+                }
+                conexion.desconectar();
+                }catch(SQLException ex){
+                    
+                }
+            }
+            
+            return productos;
+    }
+    
     private int totalProductos(){
         int totalProducts=0;
         Conexion conex = new Conexion();
