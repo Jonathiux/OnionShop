@@ -1,13 +1,21 @@
 package Logic;
-import java.awt.HeadlessException;
 import java.sql.*;
 import java.util.Vector;
 import javax.swing.table.DefaultTableModel;
 
 public class Producto {
-    String categoria, nombre, locacion, descripcion;
-    int IDProducto, cantidad;
-    double precio;
+    private String categoria, nombre, locacion, descripcion;
+    private int IDProducto, cantidad;
+    private double precio;
+    private byte[] Imagen;
+
+    public byte[] getImagen() {
+        return Imagen;
+    }
+
+    public void setImagen(byte[] Imagen) {
+        this.Imagen = Imagen;
+    }
 
     public String getCategoria() {
         return categoria;
@@ -76,30 +84,6 @@ public class Producto {
         
         return mensaje;
     }
-    
-    /*public Producto ConsultarPorPrecio(){
-
-        int i=0;
-        
-        Conexion conexion = new Conexion();
-        if (conexion.conectar()==null){
-        }else{
-            String consultaSQL = "Select * from productos where precio>=? and precio<=?";
-            try{
-                PreparedStatement ps = conexion.getConex().prepareStatement(consultaSQL);
-                ResultSet rs = ps.executeQuery();
-                while(rs.next()){
-                i++;
-                }
-                Producto[] pr = new Producto[i];
-                
-                conexion.desconectar();
-            }catch(SQLException ex){
-                
-            }
-            }
-        return pr;
-    }*/
     
     public DefaultTableModel ConsultarPorLocacion(){
         DefaultTableModel modelo = new DefaultTableModel();
@@ -191,58 +175,137 @@ public class Producto {
                 }
             }
         } while(band);
-        //JOptionPane.showMessageDialog(null, idProd);
         return idProd;   
     }
     
-    public String agregarProducto(Usuario v){
-        String mensaje="";
+    public boolean agregarProducto(Usuario v){
+        
         Conexion conex = new Conexion();
-        if(conex.conectar() == null){
-            mensaje = "Mensaje no se pudo conectar a la Base de datos";
-        }else{
-            String consultaSQL = "Insert into producto values(?,?,?,?,?,?,?)";
-            String consulta2 = "insert into vendedor_producto values(?,?)";
-            try{
-                int id = idProducto();
-                PreparedStatement ps = conex.getConex().prepareStatement(consultaSQL);
-                ps.setInt(1, id);
-                ps.setString(2,nombre);
-                ps.setString(3,categoria);
-                ps.setString(4,descripcion);
-                ps.setString(5,locacion);
-                ps.setInt(6,cantidad);
-                ps.setDouble(7,precio);
-                int fila = ps.executeUpdate();
-                mensaje = fila + " fila(s) afectada(s)"; 
-                
-                PreparedStatement ps2 = conex.getConex().prepareStatement(consulta2);
-                ps2.setInt(1, v.getIdUsuario());
-                ps2.setInt(2, id);
-                int filas2 = ps2.executeUpdate();
-                //JOptionPane.showMessageDialog(null, filas2 + "fila(s) afectada(s)"); 
-            }catch(SQLException ex){
-                mensaje = "Error al intentar insertar " + ex.getMessage(); 
+        conex.conectar();
+        String consultaSQL = "Insert into producto values(?,?,?,?,?,?,?,?)";
+        String consulta2 = "insert into vendedor_producto values(?,?)";
+        try{
+            int id = idProducto();
+            PreparedStatement ps = conex.getConex().prepareStatement(consultaSQL);
+            ps.setInt(1, id);
+            ps.setString(2,nombre);
+            ps.setString(3,categoria);
+            ps.setString(4,descripcion);
+            ps.setString(5,locacion);
+            ps.setInt(6,cantidad);
+            ps.setDouble(7,precio);
+            ps.setBytes(8, Imagen);
+            int fila = ps.executeUpdate();
+
+            PreparedStatement ps2 = conex.getConex().prepareStatement(consulta2);
+            ps2.setInt(1, v.getIdUsuario());
+            ps2.setInt(2, id);
+            int filas2 = ps2.executeUpdate();
+            if(fila > 0){
+                System.out.println(fila + " fila(s) afectada(s)");
+                if(filas2 > 0){
+                    System.out.println(fila + " fila(s) afectada(s)");
+                    return true;
+                }
+                System.out.println("Solo se guarda la primera tabla");
+                return false;
+            }else{
+                return false;
             }
-        }
-        return mensaje;
+        }catch(SQLException ex){
+            System.out.println("Error al intentar insertar " + ex.getMessage());
+            return false;
+        }finally{
+            conex.desconectar();
+        } 
     }
     
-    public void guardarimagen(byte[] bytesImg){
-        GestionImg gestion = new GestionImg();
+    public boolean actualizarProducto(){
+        
+        Conexion conex = new Conexion();
+        conex.conectar();
+        String consultaSQL = "update producto set nombre=?,categoria=?,Descripcion=?,ubicacion=?,Cantidad=?,Precio=?,img=? where idproducto=?";
         try{
-                //archivo = seleccionado.getSelectedFile();
-                if(true){
-                    String respuesta = "";
-                    respuesta = gestion.guardarImagen(bytesImg,this.IDProducto);
-                    if(respuesta != null){
-                        System.out.println(respuesta);
-                    } else{
-                        System.out.println("Error al Guardar Imagen...");
-                    }
-                }
-            } catch(HeadlessException | java.lang.NullPointerException ex){
-                System.out.println(ex);
+            PreparedStatement ps = conex.getConex().prepareStatement(consultaSQL);
+            ps.setString(1,nombre);
+            ps.setString(2,categoria);
+            ps.setString(3,descripcion);
+            ps.setString(4,locacion);
+            ps.setInt(5,cantidad);
+            ps.setDouble(6,precio);
+            ps.setBytes(7, Imagen);
+            ps.setInt(8,IDProducto);
+            int fila = ps.executeUpdate();
+            
+            if(fila > 0){
+                System.out.println(fila + " fila(s) afectada(s)");
+                return true;
+            }else{
+                return false;
             }
+        }catch(SQLException ex){
+            System.out.println("Error al intentar actualizar " + ex.getMessage());
+            return false;
+        }finally{
+            conex.desconectar();
+        }  
+    }
+    
+    public boolean consultarPorId(){
+        
+        Conexion conexion = new Conexion();
+        conexion.conectar();
+        String consultaSQL = "Select * from producto where idProducto=?";
+        try{
+            PreparedStatement ps = conexion.getConex().prepareStatement(consultaSQL);
+            ps.setInt(1, IDProducto);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                nombre = rs.getString("nombre");
+                categoria = rs.getString("Categoria");
+                descripcion = rs.getString("descripcion");
+                locacion = rs.getString("ubicacion");
+                cantidad = rs.getInt("cantidad");
+                precio = rs.getInt("Precio");
+                Imagen = rs.getBytes("img");
+                
+            }
+            return true;
+        }catch(SQLException ex){
+            System.out.println("Error al consultar" + ex);
+            return false;
+        }finally{
+            conexion.desconectar();
+        }
+            
+    }
+    
+    public boolean eliminarProducto(){
+        Conexion conex = new Conexion();
+        conex.conectar();
+        
+        try{
+            String consultaSQL1 = "delete from vendedor_producto where idproducto=?";
+            String consultaSQL = "Delete from producto where idproducto = ?";
+            PreparedStatement ps1 = conex.getConex().prepareStatement(consultaSQL1);
+            ps1.setInt(1,IDProducto);
+            int fila1 = ps1.executeUpdate();
+            PreparedStatement ps = conex.getConex().prepareStatement(consultaSQL);
+            ps.setInt(1, IDProducto);
+            int fila = ps.executeUpdate();
+            if(fila1 > 0 & fila > 0){
+                System.out.println(fila1 + " fila(s) afectadas");
+                System.out.println(fila + " fila(s) afectadas");
+                return true;
+            }else{
+                return false;
+            }
+            
+        } catch (SQLException ex) {
+            System.out.println("Error al intentar eliminar" + ex.getMessage());
+            return false;
+        }finally{
+            conex.desconectar();
+        }
     }
 }

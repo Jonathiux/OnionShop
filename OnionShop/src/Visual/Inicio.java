@@ -1,92 +1,91 @@
-
 package Visual;
 
 import Logic.Producto;
 import Logic.Usuario;
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
 
 public class Inicio extends javax.swing.JFrame {
 
     Usuario usuario;
     private String usu;
+
     public Inicio() {
         initComponents();
+        this.setExtendedState(MAXIMIZED_BOTH);
     }
 
-    
-    public void IDUsuario(){
+    public void IDUsuario() {
         usuario.setNombUsuario(usu);
     }
-    
-    public void paneles(Usuario usuario){
-        if(usuario==null){
+
+    public void paneles(Usuario usuario) {
+        if (usuario == null) {
             System.out.println("No hay usuario en la sesion");
         }
         Producto[] productos = usuario.datosproductos();
         java.awt.GridBagConstraints gridBagConstraints;
         JPanel producto[] = new JPanel[productos.length];
-        JLabel [] jlnomb = new JLabel[productos.length];
-        JLabel [] jlNombre = new JLabel[productos.length];
-        JLabel [] jlImagen = new JLabel[productos.length];
-        JLabel [] jlcat = new JLabel[productos.length];
-        JLabel [] jlubi = new JLabel[productos.length];
-        JLabel [] jlUbicacion = new JLabel[productos.length];
-        JLabel [] jlCategoria = new JLabel[productos.length];
-        JButton [] jbAgregarC = new JButton[productos.length];
-        JLabel [] jldesc = new JLabel[productos.length];
-        JLabel [] jlprec = new JLabel[productos.length];
-        JLabel [] jlPrecio = new JLabel[productos.length];
-        JLabel [] jlSeparador = new JLabel[productos.length];
+        JLabel[] jlnomb = new JLabel[productos.length];
+        JLabel[] jlNombre = new JLabel[productos.length];
+        JLabel[] jlImagen = new JLabel[productos.length];
+        JLabel[] jlcat = new JLabel[productos.length];
+        JLabel[] jlubi = new JLabel[productos.length];
+        JLabel[] jlUbicacion = new JLabel[productos.length];
+        JLabel[] jlCategoria = new JLabel[productos.length];
+        JButton[] jbAgregarC = new JButton[productos.length];
+        JLabel[] jldesc = new JLabel[productos.length];
+        JLabel[] jlprec = new JLabel[productos.length];
+        JLabel[] jlPrecio = new JLabel[productos.length];
+        JLabel[] jlSeparador = new JLabel[productos.length];
         JScrollPane[] jsp = new JScrollPane[productos.length];
-        JTextArea [] jtaDescripcion = new JTextArea[productos.length];
-        ImageIcon [] imagen = new ImageIcon[productos.length];
-        
-        for(int a=0; a<productos.length ; a++){
+        JTextArea[] jtaDescripcion = new JTextArea[productos.length];
+        ImageIcon[] imagen = new ImageIcon[productos.length];
+
+        for (int a = 0; a < productos.length; a++) {
             //Panel
             producto[a] = new JPanel();
             producto[a].setName(Integer.toString(productos[a].getIDProducto()));
             producto[a].setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-            producto[a].setPreferredSize(new Dimension(850,160));
+            producto[a].setPreferredSize(new Dimension(850, 160));
             GridBagLayout Layout = new GridBagLayout();
-            Layout.columnWidths = new int[] {0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0};
-            Layout.rowHeights = new int[] {0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0};
+            Layout.columnWidths = new int[]{0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0};
+            Layout.rowHeights = new int[]{0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0};
             producto[a].setLayout(Layout);
-            
+
             //Etiquetas
             jlnomb[a] = new JLabel();
             jlnomb[a].setText("Nombre :  ");
-            jlnomb[a].setFont(new Font("Century Gothic",0,14));
+            jlnomb[a].setFont(new Font("Century Gothic", 0, 14));
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 0;
             gridBagConstraints.gridy = 4;
             producto[a].add(jlnomb[a], gridBagConstraints);
-            
+
             jlcat[a] = new JLabel();
             jlcat[a].setText("Categoria");
-            jlcat[a].setFont(new Font("Century Gothic",0,14));
+            jlcat[a].setFont(new Font("Century Gothic", 0, 14));
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 10;
             gridBagConstraints.gridy = 4;
             producto[a].add(jlcat[a], gridBagConstraints);
-            
+
             jldesc[a] = new JLabel();
             jldesc[a].setText("Descripcion");
-            jldesc[a].setFont(new Font("Century Gothic",0,14));
+            jldesc[a].setFont(new Font("Century Gothic", 0, 14));
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 18;
             gridBagConstraints.gridy = 4;
             producto[a].add(jldesc[a], gridBagConstraints);
-            
+
             jlprec[a] = new JLabel();
             jlprec[a].setText("Precio");
-            jlprec[a].setFont(new Font("Century Gothic",0,14));
+            jlprec[a].setFont(new Font("Century Gothic", 0, 14));
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 26;
             gridBagConstraints.gridy = 4;
             producto[a].add(jlprec[a], gridBagConstraints);
-            
+
             jlSeparador[a] = new JLabel();
             jlSeparador[a].setBackground(new Color(0, 0, 0));
             jlSeparador[a].setText("");
@@ -97,65 +96,58 @@ public class Inicio extends javax.swing.JFrame {
             gridBagConstraints.gridy = 0;
             gridBagConstraints.gridheight = 11;
             producto[a].add(jlSeparador[a], gridBagConstraints);
-            
-            
+
             jlubi[a] = new JLabel();
             jlubi[a].setText("Ubicacion");
-            jlubi[a].setFont(new Font("Century Gothic",0,1));
+            jlubi[a].setFont(new Font("Century Gothic", 0, 1));
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 8;
             gridBagConstraints.gridy = 8;
             producto[a].add(jlubi[a], gridBagConstraints);
-            
+
             //Labels con Datos del producto
-            
             jlNombre[a] = new JLabel();
             jlNombre[a].setText(productos[a].getNombre());
-            jlNombre[a].setFont(new Font("Century Gothic",0,14));
+            jlNombre[a].setFont(new Font("Century Gothic", 0, 14));
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 2;
             gridBagConstraints.gridy = 4;
             producto[a].add(jlNombre[a], gridBagConstraints);
-            
-            
+
             jlUbicacion[a] = new JLabel();
-            jlUbicacion[a].setFont(new Font("Century Gothic",0,14));
+            jlUbicacion[a].setFont(new Font("Century Gothic", 0, 14));
             jlUbicacion[a].setText(productos[a].getLocacion());
             gridBagConstraints = new java.awt.GridBagConstraints();
             gridBagConstraints.gridx = 8;
             gridBagConstraints.gridy = 10;
             gridBagConstraints.anchor = GridBagConstraints.NORTH;
             producto[a].add(jlUbicacion[a], gridBagConstraints);
-            
-            
+
             jlCategoria[a] = new JLabel();
             jlCategoria[a].setText(productos[a].getCategoria());
-            jlCategoria[a].setFont(new Font("Century Gothic",0,14));
+            jlCategoria[a].setFont(new Font("Century Gothic", 0, 14));
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 14;
             gridBagConstraints.gridy = 4;
             producto[a].add(jlCategoria[a], gridBagConstraints);
-            
-            
+
             jlPrecio[a] = new JLabel();
             jlPrecio[a].setText(Double.toString(productos[a].getPrecio()));
-            jlPrecio[a].setFont(new Font("Century Gothic",0,14));
+            jlPrecio[a].setFont(new Font("Century Gothic", 0, 14));
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 26;
             gridBagConstraints.gridy = 10;
             gridBagConstraints.insets = new Insets(-60, 0, 0, 0);
             producto[a].add(jlPrecio[a], gridBagConstraints);
-            
-            
+
             jbAgregarC[a] = new JButton();
-            jbAgregarC[a].setFont(new Font("Century Gothic",0,14));
+            jbAgregarC[a].setFont(new Font("Century Gothic", 0, 14));
             jbAgregarC[a].setText("Añadir al carrito");
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 0;
             gridBagConstraints.gridy = 10;
             producto[a].add(jbAgregarC[a], gridBagConstraints);
-            
-            
+
             jsp[a] = new JScrollPane();
             jsp[a].setPreferredSize(new Dimension(226, 130));
             jtaDescripcion[a] = new JTextArea();
@@ -163,19 +155,17 @@ public class Inicio extends javax.swing.JFrame {
             jtaDescripcion[a].setRows(5);
             jtaDescripcion[a].setPreferredSize(new Dimension(224, 60));
             jsp[a].setViewportView(jtaDescripcion[a]);
-            
-            
+
             jlImagen[a] = new JLabel();
-            jlImagen[a].setPreferredSize(new Dimension(130,130));
-            imagen[a] = new ImageIcon(getClass().getResource("/Imagenes/"+Integer.toString(productos[a].getIDProducto())+".jpg"));
+            jlImagen[a].setPreferredSize(new Dimension(130, 130));
+            imagen[a] = new ImageIcon(getClass().getResource("/Imagenes/" + Integer.toString(productos[a].getIDProducto()) + ".jpg"));
             jlImagen[a].setIcon(new ImageIcon(imagen[a].getImage().getScaledInstance(130, 130, Image.SCALE_SMOOTH)));
             gridBagConstraints = new GridBagConstraints();
             gridBagConstraints.gridx = 6;
             gridBagConstraints.gridy = 0;
             gridBagConstraints.gridheight = 11;
             producto[a].add(jlImagen[a], gridBagConstraints);
-            
-            
+
             //Agregar los paneles
             gridBagConstraints = new java.awt.GridBagConstraints();
             gridBagConstraints.gridx = 0;
@@ -184,7 +174,7 @@ public class Inicio extends javax.swing.JFrame {
             ListaProduc.add(producto[a], gridBagConstraints);
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -214,6 +204,7 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
 
+        jPanel4.setBackground(new java.awt.Color(0, 255, 102));
         jPanel4.setPreferredSize(new java.awt.Dimension(1053, 1095));
         jPanel4.setLayout(new java.awt.GridBagLayout());
 
@@ -252,7 +243,6 @@ public class Inicio extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         jPanel4.add(jPanel3, gridBagConstraints);
 
@@ -298,7 +288,8 @@ public class Inicio extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.weightx = 1.0;
         jPanel4.add(jPanel2, gridBagConstraints);
 
         jPanel1.setBackground(new java.awt.Color(204, 153, 255));
@@ -374,9 +365,9 @@ public class Inicio extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridheight = 10;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.weighty = 1.0;
         jPanel4.add(jPanel1, gridBagConstraints);
 
         jScrollPane1.setPreferredSize(new java.awt.Dimension(820, 1025));
@@ -388,8 +379,7 @@ public class Inicio extends javax.swing.JFrame {
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridheight = 10;
+        gridBagConstraints.gridy = 1;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         jPanel4.add(jScrollPane1, gridBagConstraints);
 
@@ -397,13 +387,11 @@ public class Inicio extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 954, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
         );
 
         pack();
@@ -422,12 +410,12 @@ public class Inicio extends javax.swing.JFrame {
 
     private void jtfPrecioMaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPrecioMaxActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jtfPrecioMaxActionPerformed
 
     private void jtfPrecioMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPrecioMinActionPerformed
         // TODO add your handling code here:
-        
+
     }//GEN-LAST:event_jtfPrecioMinActionPerformed
 
     private void jtfPrecioMinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtfPrecioMinMouseClicked
@@ -502,7 +490,7 @@ public class Inicio extends javax.swing.JFrame {
     public void setUsu(String usu) {
         this.usu = usu;
     }
-    
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ListaProduc;

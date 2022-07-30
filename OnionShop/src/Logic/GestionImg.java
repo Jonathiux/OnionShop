@@ -1,48 +1,72 @@
-
 package Logic;
+
 import java.io.*;
-public class GestionImg implements Serializable{
-    private byte[] foto;
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
-    public byte[] getFoto() {
-        return foto;
+public class GestionImg {
+
+    private String ruta;
+    private File archivo;
+    private byte[] imagen;
+
+    public byte[] getImagen() {
+        return convertirbinario();
     }
 
-    public void setFoto(byte[] foto) {
-        this.foto = foto;
+    public void setImagen(byte[] imagen) {
+        this.imagen = imagen;
+    }
+
+    public String getRuta() {
+        return ruta;
+    }
+
+    public File getArchivo() {
+        return archivo;
+    }
+
+    public void setArchivo(File archivo) {
+        this.archivo = archivo;
+    }
+
+    public void setRuta(String ruta) {
+        this.ruta = ruta;
     }
     
-    
-    
-    FileInputStream entrada;
-    FileOutputStream salida;
-    File archivo;
-    
-    /*Abrir Imagen*/
-    public byte[] AbrirImagen(File archivo){
-        byte[] bytesImg = new byte[1024*100];
-        try {
+    private byte[] convertirbinario(){
+        FileInputStream entrada;
+        byte[] img = new byte[(int) archivo.length()];
+        try{
             entrada = new FileInputStream(archivo);
-            entrada.read(bytesImg);
-        } catch (IOException ex){
+            entrada.read(img);
+        } catch (FileNotFoundException ex) {
+            
+        } catch (IOException ex) {
             
         }
-        return bytesImg;
+        return img;
     }
-    
-    /*Guardar Imagen*/
-    public String guardarImagen(byte[] bytesImg,int id){
-        //System.out.println("Recibiendo bytes "+bytesImg);
-        String respuesta = null;
-        String img = "src/Imagenes/"+id+".jpg";
-        try {
-            salida = new FileOutputStream(img);
-            salida.write(bytesImg);
-            salida.close();
-            respuesta = "La imagen ha sido guardada con exito...";
-        } catch (IOException ex) {
-            System.out.println(ex);
+
+    public boolean abrirImagen() {
+
+        JFileChooser escoger = new JFileChooser();
+        escoger.setFileSelectionMode(JFileChooser.FILES_AND_DIRECTORIES);
+        FileNameExtensionFilter filtro = new FileNameExtensionFilter("+.png", "png");
+        FileNameExtensionFilter filtro2 = new FileNameExtensionFilter("+.jpg", "jpg");
+
+        escoger.setFileFilter(filtro);
+        escoger.setFileFilter(filtro2);
+
+        int seleccion = escoger.showOpenDialog(escoger);
+
+        if (seleccion == JFileChooser.APPROVE_OPTION) {
+            archivo = escoger.getSelectedFile();
+            this.ruta = archivo.getAbsolutePath();
+            return true;
+        } else{
+            return false;
         }
-        return respuesta;
+        
     }
 }

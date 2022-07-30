@@ -13,9 +13,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import Logic.Producto;
 import Logic.Usuario;
-import java.awt.Component;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
 
@@ -26,7 +26,14 @@ public class FVendedor extends javax.swing.JFrame {
         fondo();
         initComponents();
         this.setLocationRelativeTo(null);
+        this.setExtendedState(MAXIMIZED_BOTH);
     }
+    /*public FVendedor(Usuario vendedor){
+        this.vendedor = vendedor;
+        fondo();
+        initComponents();
+        this.setLocationRelativeTo(null);
+    }*/
     static void fondo(){
             try{
                 UIManager.setLookAndFeel("com.jtattoo.plaf.bernstein.BernsteinLookAndFeel");
@@ -35,8 +42,9 @@ public class FVendedor extends javax.swing.JFrame {
             } catch(IllegalAccessException ex){
             } catch(UnsupportedLookAndFeelException ex){
             }
+            
         }
-    private void crearPanelesProductos(Usuario u){
+    public void crearPanelesProductos(Usuario u) throws IOException{
         if(u == null){
             System.out.println("El objeto esta vacio");
         }
@@ -93,7 +101,7 @@ public class FVendedor extends javax.swing.JFrame {
             jLImg[i].setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
             jLImg[i].setPreferredSize(new Dimension(130,130));
             try {
-                img[i] = new ImageIcon(getClass().getResource("/Imagenes/"+Integer.toString(producto[i].getIDProducto())+".jpg"));
+                img[i] = new ImageIcon(producto[i].getImagen());
                 jLImg[i].setIcon(new ImageIcon(img[i].getImage().getScaledInstance(130, 130, Image.SCALE_SMOOTH)));
                 gridBagConstraints = new java.awt.GridBagConstraints();
                 gridBagConstraints.gridx = 1;
@@ -305,6 +313,7 @@ public class FVendedor extends javax.swing.JFrame {
         jPListaProductos = new javax.swing.JPanel();
         jPNotificaciones = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
+        jBActualizarPanel = new javax.swing.JButton();
         barraMenu = new javax.swing.JMenuBar();
         menu = new javax.swing.JMenu();
         comprador = new javax.swing.JMenuItem();
@@ -316,6 +325,9 @@ public class FVendedor extends javax.swing.JFrame {
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
+            }
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
 
@@ -410,6 +422,13 @@ public class FVendedor extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         jPanel4.add(jPNotificaciones, gridBagConstraints);
 
+        jBActualizarPanel.setText("Actualizar Panel");
+        jBActualizarPanel.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBActualizarPanelActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -421,7 +440,8 @@ public class FVendedor extends javax.swing.JFrame {
                         .addComponent(jB_productoNuevo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jB_eliminarTodo)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jBActualizarPanel))
                     .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE))
                 .addContainerGap())
         );
@@ -431,7 +451,8 @@ public class FVendedor extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jB_productoNuevo)
-                    .addComponent(jB_eliminarTodo))
+                    .addComponent(jB_eliminarTodo)
+                    .addComponent(jBActualizarPanel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
@@ -441,7 +462,7 @@ public class FVendedor extends javax.swing.JFrame {
 
         barraMenu.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
 
-        menu.setBorder(new javax.swing.border.MatteBorder(null));
+        menu.setBorder(null);
         menu.setText("Menu");
 
         comprador.setText("Sesion Comprador");
@@ -489,23 +510,35 @@ public class FVendedor extends javax.swing.JFrame {
         ActionListener oyenteBoton = new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                System.out.println(panel.getName());
+                Producto p = new Producto();
+                p.setIDProducto(Integer.parseInt(panel.getName()));
+                if(p.eliminarProducto()){
+                    System.out.println("Producto eliminado correctamente...");
+                    try {
+                        jPListaProductos.removeAll();
+                        crearPanelesProductos(vendedor);
+                    } catch (IOException ex) {
+                        System.out.println("Error" + ex);
+                    }
+                }else{
+                    System.out.println("Error al eliminar");
+                }
             }
         };
         boton.addActionListener(oyenteBoton);
     }
     private void actualizarProducto(JPanel panel,JButton boton){
         Producto p =new Producto();
-        NewProduct np = new NewProduct();
+        
         ActionListener oyenteBoton = new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                Component[] componente = new Component[50];
-                componente = panel.getComponents();
-                np.setVisible(true);
-                np.jB_guardarProducto.setText("Actualizar Producto");
+                //Component[] componente = new Component[50];
+                //componente = panel.getComponents();
                 p.setIDProducto(Integer.parseInt(panel.getName()));
-                np.producto = p;
+                NewProduct np = new NewProduct(p);
+                np.jB_guardarProducto.setText("Actualizar Producto");
+                np.setVisible(true);
             }
         };
         boton.addActionListener(oyenteBoton);
@@ -516,12 +549,28 @@ public class FVendedor extends javax.swing.JFrame {
     }//GEN-LAST:event_jB_productoNuevoActionPerformed
 
     private void jB_eliminarTodoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jB_eliminarTodoActionPerformed
-        jPListaProductos.removeAll();
-        JOptionPane.showConfirmDialog(null, "Deseas eliminar todo?");
+        int resp = JOptionPane.showConfirmDialog(null, "Deseas eliminar todo?");
+        if(resp==0){
+            if(vendedor.eliminarProductos()){
+                System.out.println("Todos lo productos eliminados correctamente...");
+                try {
+                    crearPanelesProductos(vendedor);
+                } catch (IOException ex) {
+                    System.out.println("Error "+ ex);
+                }
+            }else{
+                System.out.println("Error al eliminar todos los productos...");
+            }
+        }
     }//GEN-LAST:event_jB_eliminarTodoActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        crearPanelesProductos(vendedor);
+        /*try {
+            crearPanelesProductos(vendedor);
+        } catch (IOException ex) {
+            
+        }*/
+        System.out.println("windowactivaate");
     }//GEN-LAST:event_formWindowActivated
 
     private void closeSesionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeSesionActionPerformed
@@ -538,8 +587,27 @@ public class FVendedor extends javax.swing.JFrame {
     }//GEN-LAST:event_compradorActionPerformed
 
     private void salirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_salirActionPerformed
+        //barraMenu.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
         System.exit(0);
     }//GEN-LAST:event_salirActionPerformed
+
+    private void jBActualizarPanelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBActualizarPanelActionPerformed
+        try {
+            crearPanelesProductos(vendedor);
+            System.out.println("Boton click");
+        } catch (IOException ex) {
+            
+        }
+    }//GEN-LAST:event_jBActualizarPanelActionPerformed
+
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        try {
+            crearPanelesProductos(vendedor);
+            System.out.println("opened");
+        } catch (IOException ex) {
+            
+        }
+    }//GEN-LAST:event_formWindowOpened
 
      
     public static void main(String args[]) {
@@ -576,12 +644,13 @@ public class FVendedor extends javax.swing.JFrame {
     private javax.swing.JMenuBar barraMenu;
     private javax.swing.JMenuItem closeSesion;
     private javax.swing.JMenuItem comprador;
+    private javax.swing.JButton jBActualizarPanel;
     private javax.swing.JButton jB_eliminarTodo;
     private javax.swing.JButton jB_productoNuevo;
     private javax.swing.JLabel jLNombre;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel jPListaProductos;
+    public javax.swing.JPanel jPListaProductos;
     private javax.swing.JPanel jPNotificaciones;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;

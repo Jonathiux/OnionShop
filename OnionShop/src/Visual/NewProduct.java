@@ -1,21 +1,23 @@
 
 package Visual;
-import Logic.GestionImg;
-import java.awt.Image;
-import java.io.*;
+import Logic.*;
 import javax.swing.*;
-//import Logic.GestionImg;
-import Logic.Producto;
-import Logic.Usuario;
+import java.awt.Image;
+import java.io.IOException;
 
 public class NewProduct extends javax.swing.JFrame {
+    GestionImg gestion = new GestionImg();
     Usuario vendedor = FVendedor.vendedor;
     Producto producto;
-    JFileChooser seleccionado = new JFileChooser();
-    File archivo;
-    byte[] bytesImg;
-    //GestionImg gestion = new GestionImg();
+    
     public NewProduct() {
+        initComponents();
+        this.setLocationRelativeTo(null);
+        this.setResizable(false);
+    }
+    
+    public NewProduct(Producto p) {
+        this.producto = p;
         initComponents();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
@@ -24,9 +26,10 @@ public class NewProduct extends javax.swing.JFrame {
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
+        java.awt.GridBagConstraints gridBagConstraints;
 
         jPanel1 = new javax.swing.JPanel();
-        jLabel1 = new javax.swing.JLabel();
+        jLnombre = new javax.swing.JLabel();
         jT_nombreProducto = new javax.swing.JTextField();
         jLabel2 = new javax.swing.JLabel();
         jT_Cantidad = new javax.swing.JTextField();
@@ -38,175 +41,234 @@ public class NewProduct extends javax.swing.JFrame {
         jT_Descripcion = new javax.swing.JTextArea();
         jT_Locacion = new javax.swing.JTextField();
         jT_Precio = new javax.swing.JTextField();
-        jLabel7 = new javax.swing.JLabel();
         jLImagen = new javax.swing.JLabel();
         jLabel9 = new javax.swing.JLabel();
         jBAbrirArchivo = new javax.swing.JButton();
         jB_guardarProducto = new javax.swing.JButton();
         jC_Categoria = new javax.swing.JComboBox<>();
 
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
+            }
+        });
+
         jPanel1.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jPanel1.setLayout(new java.awt.GridBagLayout());
 
-        jLabel1.setText("Nombre del Producto:");
+        jLnombre.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLnombre.setText("Nombre del Producto:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        jPanel1.add(jLnombre, gridBagConstraints);
 
+        jT_nombreProducto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipadx = 150;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        jPanel1.add(jT_nombreProducto, gridBagConstraints);
+
+        jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Cantidad:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        jPanel1.add(jLabel2, gridBagConstraints);
 
+        jT_Cantidad.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jT_Cantidad.setMaximumSize(new java.awt.Dimension(200, 200));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.ipadx = 150;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        jPanel1.add(jT_Cantidad, gridBagConstraints);
 
+        jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Categoria: ");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        jPanel1.add(jLabel3, gridBagConstraints);
 
+        jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Locacion:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 13;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        jPanel1.add(jLabel4, gridBagConstraints);
 
+        jLabel5.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel5.setText("Precio:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        jPanel1.add(jLabel5, gridBagConstraints);
 
+        jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Descripcion:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 11;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        jPanel1.add(jLabel6, gridBagConstraints);
+
+        jScrollPane1.setMaximumSize(new java.awt.Dimension(100, 100));
+        jScrollPane1.setPreferredSize(new java.awt.Dimension(100, 50));
 
         jT_Descripcion.setColumns(20);
+        jT_Descripcion.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jT_Descripcion.setRows(5);
+        jT_Descripcion.setMaximumSize(new java.awt.Dimension(100, 100));
         jScrollPane1.setViewportView(jT_Descripcion);
 
-        jLabel7.setText("Imagen:");
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.ipadx = 200;
+        gridBagConstraints.ipady = 60;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        jPanel1.add(jScrollPane1, gridBagConstraints);
+
+        jT_Locacion.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 13;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.ipadx = 365;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 10, 0);
+        jPanel1.add(jT_Locacion, gridBagConstraints);
+
+        jT_Precio.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.ipadx = 150;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        jPanel1.add(jT_Precio, gridBagConstraints);
 
         jLImagen.setBackground(new java.awt.Color(255, 255, 255));
         jLImagen.setToolTipText("");
         jLImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
+        jLImagen.setMaximumSize(new java.awt.Dimension(200, 200));
         jLImagen.setOpaque(true);
+        jLImagen.setPreferredSize(new java.awt.Dimension(200, 200));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
+        gridBagConstraints.gridheight = 9;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        jPanel1.add(jLImagen, gridBagConstraints);
 
         jLabel9.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         jLabel9.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel9.setText("Producto Nuevo");
+        jLabel9.setOpaque(true);
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 8;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.weighty = 1.0;
+        jPanel1.add(jLabel9, gridBagConstraints);
 
+        jBAbrirArchivo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jBAbrirArchivo.setText("Abrir Archivos");
         jBAbrirArchivo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jBAbrirArchivoActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridy = 10;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
+        jPanel1.add(jBAbrirArchivo, gridBagConstraints);
 
+        jB_guardarProducto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jB_guardarProducto.setText("Guardar Producto");
         jB_guardarProducto.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jB_guardarProductoActionPerformed(evt);
             }
         });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 14;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        jPanel1.add(jB_guardarProducto, gridBagConstraints);
 
-        jC_Categoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar Categoria...", "Electrodomésticos", "Consolas y Videojuegos", "Ropa", "Deportes", "Hogar", "Juguetería" }));
+        jC_Categoria.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jC_Categoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Seleccionar Categoria...", "Electrodomesticos", "Consolas y Videojuegos", "Ropa", "Deportes", "Hogar", "Jugueteria" }));
         jC_Categoria.setMinimumSize(new java.awt.Dimension(142, 25));
         jC_Categoria.setPreferredSize(new java.awt.Dimension(145, 25));
-
-        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
-        jPanel1.setLayout(jPanel1Layout);
-        jPanel1Layout.setHorizontalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel9, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4)
-                            .addComponent(jLabel5)
-                            .addComponent(jLabel7))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jT_Locacion)
-                            .addComponent(jScrollPane1)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(jLImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(jBAbrirArchivo, javax.swing.GroupLayout.PREFERRED_SIZE, 111, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
-                                            .addComponent(jC_Categoria, javax.swing.GroupLayout.Alignment.LEADING, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                            .addComponent(jT_nombreProducto, javax.swing.GroupLayout.Alignment.LEADING)
-                                            .addComponent(jT_Cantidad, javax.swing.GroupLayout.Alignment.LEADING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                                        .addGap(68, 68, 68)
-                                        .addComponent(jB_guardarProducto))
-                                    .addComponent(jT_Precio, javax.swing.GroupLayout.PREFERRED_SIZE, 145, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                .addGap(0, 58, Short.MAX_VALUE)))))
-                .addGap(18, 18, 18))
-        );
-        jPanel1Layout.setVerticalGroup(
-            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLabel9)
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(jT_nombreProducto, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jB_guardarProducto))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(jT_Cantidad, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel3)
-                    .addComponent(jC_Categoria, javax.swing.GroupLayout.PREFERRED_SIZE, 25, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(jT_Locacion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel5)
-                    .addComponent(jT_Precio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jLabel7)
-                        .addGap(96, 96, 96))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(18, 18, 18)
-                                .addComponent(jLImagen, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(jPanel1Layout.createSequentialGroup()
-                                .addGap(30, 30, 30)
-                                .addComponent(jBAbrirArchivo)))
-                        .addContainerGap(38, Short.MAX_VALUE))))
-        );
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.ipadx = 11;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        jPanel1.add(jC_Categoria, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 600, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 520, Short.MAX_VALUE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void jBAbrirArchivoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBAbrirArchivoActionPerformed
-        GestionImg gestion = new GestionImg();
-        if(seleccionado.showDialog(this, "ABRIR ARCHIVO") == JFileChooser.APPROVE_OPTION){
-            archivo = seleccionado.getSelectedFile();
-            if(archivo.canRead()){
-                if(archivo.getName().endsWith("jpg")||archivo.getName().endsWith("png")||archivo.getName().endsWith("gif")){
-                    bytesImg = gestion.AbrirImagen(archivo);
-                    jLImagen.setIcon(new ImageIcon(new ImageIcon(bytesImg).getImage().getScaledInstance(jLImagen.getWidth(), jLImagen.getHeight(), Image.SCALE_SMOOTH)));
-                }
-            }
+        
+        if(gestion.abrirImagen()){
+            jLImagen.setIcon(new ImageIcon(new ImageIcon(gestion.getImagen()).getImage().getScaledInstance(jLImagen.getWidth(), jLImagen.getHeight(),Image.SCALE_SMOOTH)));
+        }else{
+            jLImagen.setIcon(null);
         }
     }//GEN-LAST:event_jBAbrirArchivoActionPerformed
     
     public boolean isNumero(String num){
         try{
-            int numero =Integer.parseInt(num);
+            double numero =Integer.parseInt(num);
             return false;
         }catch(NumberFormatException e){
             return true;
@@ -254,43 +316,100 @@ public class NewProduct extends javax.swing.JFrame {
         }else{
             jT_Locacion.setBorder(null);
         }
+        
         if(jLImagen.getIcon()==null){
-            jLImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
-            band = false;
-        }else{
-            jLImagen.setBorder(null);
-        }
-        if(!archivo.getName().endsWith("jpg")){
-                JOptionPane.showMessageDialog(null, "Solo acepta imagenes con formato \"jpg\"");
+            int  res = JOptionPane.showConfirmDialog(null,"¿Desea Guardar sin una imagen?");
+            System.out.println(res);
+            if(res != 0){
                 jLImagen.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
                 band = false;
+            }else{
+                jLImagen.setBorder(null);
             }
+        }
         
         if(band){
-            producto = new Producto();
-            producto.setCantidad(Integer.parseInt(jT_Cantidad.getText()));
-            producto.setNombre(jT_nombreProducto.getText());
-            producto.setCategoria(jC_Categoria.getSelectedItem().toString());
-            producto.setDescripcion(jT_Descripcion.getText());
-            producto.setLocacion(jT_Locacion.getText());
-            producto.setPrecio(Double.parseDouble(jT_Precio.getText()));
+            
             if("Guardar Producto".equals(jB_guardarProducto.getText())){
-                producto.agregarProducto(vendedor);
-            }else{
+                producto = new Producto();
+                producto = obtenerInfo(producto);
                 
+                if(producto.agregarProducto(vendedor)){
+                    try {
+                        System.out.println("Se ha guardado con exito");
+                        limpiarCasillas();
+                        int res = JOptionPane.showConfirmDialog(null, "Desea Añadir otro producto");
+                        if(res!=0){
+                            this.setVisible(false);
+                        }
+                        actualizarPanel();
+                    } catch (IOException ex) {
+                        System.out.println("Error "+ ex);
+                    }
+                }else{
+                    System.out.println("Error al guardar");
+                }
+            }else{
+                producto = obtenerInfo(producto);
+                if(producto.actualizarProducto()){
+                    System.out.println("Se ha actualizado con exito");
+                    limpiarCasillas();
+                    try {
+                        actualizarPanel();
+                    } catch (IOException ex) {
+                        System.out.println("Error" + ex);
+                    }
+                    this.setVisible(false);
+                }else{
+                    System.out.println("Error al actualizar");
+                }
             }
-            producto.guardarimagen(bytesImg);
-            jT_nombreProducto.setText("");
-            jC_Categoria.setSelectedIndex(0);
-            jT_Descripcion.setText("");
-            jT_Locacion.setText("");
-            jT_Cantidad.setText("");
-            jT_Precio.setText("");
-            jLImagen.setIcon(null);
+            
         }
     }//GEN-LAST:event_jB_guardarProductoActionPerformed
-
-    
+    private void actualizarPanel() throws IOException{
+        FVendedor v = new FVendedor();
+        v.jPListaProductos.removeAll();
+        v.crearPanelesProductos(vendedor);
+    }
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        if(producto != null){
+            producto.consultarPorId();
+            jC_Categoria.setSelectedItem(producto.getCategoria());
+            jT_nombreProducto.setText(producto.getNombre());
+            jT_Cantidad.setText(Integer.toString(producto.getCantidad()));
+            jT_Descripcion.setText(producto.getDescripcion());
+            jT_Locacion.setText(producto.getLocacion());
+            jT_Precio.setText(Double.toString(producto.getPrecio()));
+            try{
+                jLImagen.setIcon(new ImageIcon(new ImageIcon(producto.getImagen()).getImage().getScaledInstance(jLImagen.getWidth(), jLImagen.getHeight(), Image.SCALE_SMOOTH)));
+            }catch(Exception ex){
+                System.out.println("Error "+ ex);
+            }
+        }
+    }//GEN-LAST:event_formWindowOpened
+    private void limpiarCasillas(){
+        jT_nombreProducto.setText("");
+        jC_Categoria.setSelectedIndex(0);
+        jT_Descripcion.setText("");
+        jT_Locacion.setText("");
+        jT_Cantidad.setText("");
+        jT_Precio.setText("");
+        jLImagen.setIcon(null);
+    }
+    private Producto obtenerInfo(Producto p){
+        p.setCantidad(Integer.parseInt(jT_Cantidad.getText()));
+        p.setNombre(jT_nombreProducto.getText());
+        p.setCategoria(jC_Categoria.getSelectedItem().toString());
+        p.setDescripcion(jT_Descripcion.getText());
+        p.setLocacion(jT_Locacion.getText());
+        p.setPrecio(Double.parseDouble(jT_Precio.getText()));
+        if(jLImagen.getBorder()!=null){
+            p.setImagen(gestion.getImagen());
+        }
+        
+        return p;
+    }
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -314,6 +433,7 @@ public class NewProduct extends javax.swing.JFrame {
             java.util.logging.Logger.getLogger(NewProduct.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -329,14 +449,13 @@ public class NewProduct extends javax.swing.JFrame {
     public javax.swing.JButton jB_guardarProducto;
     private javax.swing.JComboBox<String> jC_Categoria;
     private javax.swing.JLabel jLImagen;
-    private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel6;
-    private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel9;
+    private javax.swing.JLabel jLnombre;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jT_Cantidad;

@@ -2,9 +2,6 @@
 package Logic;
 
 import java.sql.*;
-import java.util.HashSet;
-import java.util.Set;
-import javax.swing.JOptionPane;
 
 public class Usuario {
     private int idUsuario, telefono;
@@ -266,5 +263,42 @@ public class Usuario {
             }
         }
         return idsProductos;
+    }
+    
+    public boolean eliminarProductos() {
+        Producto[] p = consultarProduFinales();
+        Conexion conex = new Conexion();
+        conex.conectar();
+        try{
+            String consultaSQL1 = "delete from vendedor_producto where idusuario=?";
+            PreparedStatement ps1 = conex.getConex().prepareStatement(consultaSQL1);
+            ps1.setInt(1, idUsuario);
+            int fila1 = ps1.executeUpdate();
+            int filas = 0;
+            for (Producto p1 : p) {
+
+                    String consultaSQL = "delete from producto where idproducto=?";
+                    PreparedStatement ps = conex.getConex().prepareStatement(consultaSQL);
+                    ps.setInt(1, p1.getIDProducto());
+                    ps.executeUpdate();
+                    filas += ps.executeUpdate();
+            }
+            if(fila1>0){
+                System.out.println(fila1+" fila(s) afectadas");
+                if(filas>0){
+                    System.out.println(filas+" fila(s) afectadas");
+                    return true;
+                }
+                System.out.println("Solo una tabla fue afectada");
+                return false;
+            }else{
+                return false;
+            }
+        }catch(SQLException ex){
+            System.out.println("Error "+ex);
+            return false;
+        }finally{
+            conex.desconectar();
+        }
     }
 }
