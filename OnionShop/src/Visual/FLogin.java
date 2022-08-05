@@ -7,8 +7,9 @@ import javax.swing.*;
 
 public class FLogin extends javax.swing.JFrame {
 
-    Usuario usuario = new Usuario();
+    private Usuario usuario = new Usuario();
     private String usu, contra;
+    
     public FLogin() {
         initComponents();
         Imagenes();
@@ -46,11 +47,6 @@ public class FLogin extends javax.swing.JFrame {
         jPanel1.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jlLogo.setText("jLabel2");
-        jlLogo.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jlLogoMouseClicked(evt);
-            }
-        });
         jPanel1.add(jlLogo, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 30, 110, 90));
 
         jtfUsuario.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
@@ -155,17 +151,20 @@ public class FLogin extends javax.swing.JFrame {
     }//GEN-LAST:event_jpfContraseñaActionPerformed
 
     private void jbLoginActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbLoginActionPerformed
-        // TODO add your handling code here:
         Inicio inicio = new Inicio();
         usuario.setNombUsuario(jtfUsuario.getText());
         usuario.setContraseña(jpfContraseña.getText());
-        if(usuario.Login().equals("")){
+        usuario.Login();
+        if("Administrador".equals(usuario.getTipo_usuario())){
+            Administrador admin = new Administrador(usuario);
+            admin.setVisible(true);
+            this.setVisible(false);
+        } else if(usuario.Login().equals("")){
             this.setVisible(false);
             inicio.setVisible(true);
-            inicio.usuario = this.usuario;
+            inicio.setUsuario(this.usuario);
             inicio.setExtendedState(MAXIMIZED_BOTH);
-            FVendedor.vendedor = this.usuario;
-        }else{
+        } else {
             jlError.setText(usuario.Login());
         }
     }//GEN-LAST:event_jbLoginActionPerformed
@@ -175,10 +174,6 @@ public class FLogin extends javax.swing.JFrame {
         fr.setVisible(true);
         this.setVisible(false);
     }//GEN-LAST:event_jbRegistrarseActionPerformed
-
-    private void jlLogoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jlLogoMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_jlLogoMouseClicked
 
     
     public static void main(String args[]) {
@@ -228,13 +223,16 @@ public class FLogin extends javax.swing.JFrame {
     public void setContra(String contra) {
         this.contra = contra;
     }
-
     
-
     public void returndatos(){
         jtfUsuario.setText(usu);
         jpfContraseña.setText(contra);
     }
+    
+    public Usuario getUsuario(){
+        return this.usuario;
+    }
+    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel JlContraseña;
     private javax.swing.JLabel JlIniciar;

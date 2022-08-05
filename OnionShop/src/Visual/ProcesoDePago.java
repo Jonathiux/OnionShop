@@ -59,8 +59,6 @@ public class ProcesoDePago extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jLabel5 = new javax.swing.JLabel();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
         panel1.setBackground(new java.awt.Color(204, 204, 255));
 
         jLabel1.setText("nombre");

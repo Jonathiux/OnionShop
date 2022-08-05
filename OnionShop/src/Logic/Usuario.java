@@ -2,16 +2,27 @@
 package Logic;
 
 import java.sql.*;
+import java.util.ArrayList;
 
 public class Usuario {
-    private int idUsuario, telefono;
-    private String nombre, apellidos, direccion,nombUsuario,contraseña,fechana;
+    private int idUsuario;
+    long telefono;
+    private String nombre, apellidos, direccion,nombUsuario,contraseña,tipo_usuario;
 
-    public String getFechana() {
+    public String getTipo_usuario() {
+        return tipo_usuario;
+    }
+
+    public void setTipo_usuario(String tipo_usuario) {
+        this.tipo_usuario = tipo_usuario;
+    }
+    private Date fechana;
+
+    public Date getFechana() {
         return fechana;
     }
 
-    public void setFechana(String fechana) {
+    public void setFechana(Date fechana) {
         this.fechana = fechana;
     }
 
@@ -24,11 +35,11 @@ public class Usuario {
         this.idUsuario = idUsuario;
     }
 
-    public int getTelefono() {
+    public long getTelefono() {
         return telefono;
     }
 
-    public void setTelefono(int telefono) {
+    public void setTelefono(long telefono) {
         this.telefono = telefono;
     }
 
@@ -91,10 +102,11 @@ public class Usuario {
                 ps.setString(2, nombre);
                 ps.setString(3, apellidos);
                 ps.setString(4, direccion);
-                ps.setString(5, fechana);
-                ps.setInt(6, telefono);
+                ps.setDate(5, fechana);
+                ps.setLong(6, telefono);
                 ps.setString(7, nombUsuario);
                 ps.setString(8, contraseña);
+                ps.setString(9, "Usuario");
                 ps.executeUpdate();
                 mensaje="Usuario registrado";
                 System.out.println(nombre + apellidos + direccion + fechana + telefono + nombUsuario + contraseña);
@@ -118,7 +130,7 @@ public class Usuario {
         if(conexion.conectar()==null){
             mensaje="No se ha podido conectar";
         }else{
-            String consultaSQL = "select nombreUsuario, contrasena, idusuario from usuario where nombreusuario=?";
+            String consultaSQL = "select * from usuario where nombreusuario=?";
             try{
                 PreparedStatement ps = conexion.getConex().prepareStatement(consultaSQL);
                 ps.setString(1, nombUsuario);
@@ -127,17 +139,20 @@ public class Usuario {
                     contraseña2 = rs.getString("contrasena");
                 }
                 if(contraseña.equals(contraseña2)){
-                    System.out.println("Coinciden");
+                    //System.out.println("Coinciden");
                     idUsuario = rs.getInt("IDUsuario");
+                    telefono = rs.getLong("telefono");
+                    nombre = rs.getString("nombre");
+                    apellidos = rs.getString("Apellidos");
+                    direccion = rs.getString("direccion");
+                    nombUsuario= rs.getString("nombreusuario");
+                    contraseña = rs.getString("contrasena");
+                    fechana = rs.getDate("fechanac");
+                    tipo_usuario = rs.getString("tipoUsuario");
                 }else{
                     mensaje="Usuario o contraseña Inconrrectos";
-                    System.out.println(contraseña+" "+contraseña2);
+                    //System.out.println(contraseña+" "+contraseña2); 
                 }
-                /*if((nombUsuario.equals(rs.getString("nombreUsuario"))) && (contraseña.equals(rs.getString("contrasena")))){
-                    
-                }else{
-                    mensaje="Usuario o contraseña Inconrrectos";
-                }*/
                 conexion.desconectar();
             }catch(SQLException ex){
                 mensaje="Usuario no encontrado, registrese";
@@ -148,12 +163,12 @@ public class Usuario {
     }
     
     private int tproductos (){
-        int total=0;
+        int total=0;    
         Conexion conexion = new Conexion();
         if(conexion.conectar()==null){
             System.out.println("No se ha podido conectar");
         }else{
-            String consultaSQL = "select p.idproducto from producto p join vendedor_producto vp on p.idproducto=vp.idproducto where vp.idusuario<>?";
+            String consultaSQL = "select p.idproducto from producto as p inner join vendedor_producto as v_p on p.idproducto=v_p.idproducto where v_p.idusuario<>?";
             try{
                PreparedStatement ps = conexion.getConex().prepareStatement(consultaSQL);
                ps.setInt(1, idUsuario);
@@ -163,19 +178,20 @@ public class Usuario {
                }
                conexion.desconectar();
             }catch(SQLException ex){
-                
             }
         }
+        //System.out.println(total);
         return total;
-        }
+    }
     
     public Producto[] datosproductos(){
         Conexion conexion = new Conexion();
-        Producto productos[]= new Producto[tproductos()];
+        Producto[] productos = new Producto[tproductos()];
             if(conexion.conectar()==null){
                 System.out.println("No se ha podido conectar");
             }else{
-                String consultaSQL = "select p.* from producto p join vendedor_producto vp on p.idproducto=vp.idproducto where vp.idusuario<>?";
+                String consultaSQL = "select p.* from producto as p inner join vendedor_producto as v_p on p.idproducto=v_p.idproducto where v_p.idusuario<>?";
+
                 try{
                 PreparedStatement ps = conexion.getConex().prepareStatement(consultaSQL);
                 ps.setInt(1, idUsuario);
@@ -189,6 +205,8 @@ public class Usuario {
                     String categoria = rs.getString("categoria");
                     String ubicacion = rs.getString("ubicacion");
                     String descripcion = rs.getString("descripcion");
+                    byte[] imagen = rs.getBytes("img");
+                    
                     productos[a]=new Producto();
                     productos[a].setNombre(nombre);
                     productos[a].setIDProducto(idproducto);
@@ -197,76 +215,53 @@ public class Usuario {
                     productos[a].setPrecio(precio);
                     productos[a].setLocacion(ubicacion);
                     productos[a].setDescripcion(descripcion);
+                    productos[a].setImagen(imagen);
                     a++;
                 }
                 conexion.desconectar();
                 }catch(SQLException ex){
-                    
+                    System.out.println("error "+ex);
                 }
             }
-            
             return productos;
     }
     
-    private int totalProductos(){
-        int totalProducts=0;
+    public ArrayList<Producto> productos(){
+        ArrayList<Producto> productos = new ArrayList();
+        Producto producto;
         Conexion conex = new Conexion();
         if(conex.conectar()!=null){
-            String consultaSQL = "select idproducto from vendedor_producto where idusuario=?";
+            String consultaSQL = "";
+            consultaSQL = "select * from producto as p inner join vendedor_producto as v_p on p.idproducto = v_p.idproducto where idusuario=?";
+            
             try{
                PreparedStatement ps = conex.getConex().prepareStatement(consultaSQL);
                 ps.setInt(1, idUsuario);
+                
                 ResultSet rs = ps.executeQuery();
                 while(rs.next()){
-                    totalProducts++;
+                    producto = new Producto();
+                    producto.setIDProducto(rs.getInt("idproducto"));
+                    producto.setCantidad(rs.getInt("cantidad"));
+                    producto.setNombre(rs.getString("nombre"));
+                    producto.setCategoria(rs.getString("categoria"));
+                    producto.setDescripcion(rs.getString("descripcion"));
+                    producto.setLocacion(rs.getString("ubicacion"));
+                    producto.setPrecio(rs.getDouble("precio"));
+                    producto.setImagen(rs.getBytes("img"));
+                    
+                    productos.add(producto);
                 }
                 conex.desconectar(); 
             } catch(SQLException ex){
-            
+                
             }
         }
-        return totalProducts;
-    }
-    
-    public Producto[] consultarProduFinales(){
-        Conexion conex = new Conexion();
-        Producto idsProductos[] = new Producto[totalProductos()];
-        if(conex.conectar()==null){
-        } else{
-            String consultaSQL = "select * from vendedor_producto as v_p inner join producto as p on v_p.idProducto = p.idproducto where v_p.idusuario=?";
-            try{
-                PreparedStatement ps = conex.getConex().prepareStatement(consultaSQL);
-                ps.setInt(1, idUsuario);
-                ResultSet rs = ps.executeQuery();
-                int i =0;
-                while(rs.next()){
-                    int idproducto = (rs.getInt("idproducto"));
-                    int cantidad = (rs.getInt("cantidad"));
-                    String nombre = (rs.getString("nombre"));
-                    String categoria = (rs.getString("categoria"));
-                    String descripcion = (rs.getString("descripcion"));
-                    String ubicacion = (rs.getString("ubicacion"));
-                    double precio = (rs.getDouble("precio"));
-                    idsProductos[i] = new Producto();
-                    idsProductos[i].setCantidad(cantidad);
-                    idsProductos[i].setNombre(nombre);
-                    idsProductos[i].setCategoria(categoria);
-                    idsProductos[i].setDescripcion(descripcion);
-                    idsProductos[i].setLocacion(ubicacion);
-                    idsProductos[i].setPrecio(precio);
-                    idsProductos[i].setIDProducto(idproducto);
-                    i++;
-                }
-                conex.desconectar();
-            } catch(SQLException ex) {
-                System.out.println("Error al intentar consultar " + ex.getMessage()); 
-            }
-        }
-        return idsProductos;
+        return productos;
     }
     
     public boolean eliminarProductos() {
-        Producto[] p = consultarProduFinales();
+        ArrayList<Producto> p = productos();
         Conexion conex = new Conexion();
         conex.conectar();
         try{
@@ -296,6 +291,46 @@ public class Usuario {
             }
         }catch(SQLException ex){
             System.out.println("Error "+ex);
+            return false;
+        }finally{
+            conex.desconectar();
+        }
+    }
+    public boolean comprobarVendedor(){
+        Conexion conex = new Conexion();
+        conex.conectar();
+        try {
+            String ConsultaSQL = "select * from vendedor where idusuario=?";
+            PreparedStatement ps = conex.getConex().prepareStatement(ConsultaSQL);
+            ps.setInt(1, idUsuario);
+            ResultSet rs = ps.executeQuery();
+            if(rs.next()){
+                return true;
+            }else{
+                return false;
+            }
+        } catch (SQLException ex) {
+            return false;
+        }finally{
+            conex.desconectar();
+        }
+    }
+    
+    public boolean convertirVendedor(){
+        Conexion conex = new Conexion();
+        conex.conectar();
+        try{
+            String ConsultaSQL = "insert into vendedor values(?)";
+            PreparedStatement ps = conex.getConex().prepareStatement(ConsultaSQL);
+            ps.setInt(1, idUsuario);
+            int fila = ps.executeUpdate();
+            if(fila>0){
+                return true;
+            }else{
+                return false;
+            }
+        }catch(SQLException ex){
+            System.out.println("Error "+ ex);
             return false;
         }finally{
             conex.desconectar();

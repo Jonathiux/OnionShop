@@ -11,7 +11,11 @@ public class GestionImg {
     private byte[] imagen;
 
     public byte[] getImagen() {
-        return convertirbinario();
+        if(archivo == null){
+            return this.imagen;
+        }else{
+            return convertirbinario();
+        }
     }
 
     public void setImagen(byte[] imagen) {

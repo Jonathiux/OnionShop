@@ -1,180 +1,154 @@
 package Visual;
 
-import Logic.Producto;
-import Logic.Usuario;
+import Logic.*;
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.*;
 
 public class Inicio extends javax.swing.JFrame {
-
-    Usuario usuario;
-    private String usu;
-
+    
+    private Usuario usuario;
+    
     public Inicio() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
+        Imagenes();
     }
-
-    public void IDUsuario() {
-        usuario.setNombUsuario(usu);
+    
+    private void Imagenes(){        
+        ImageIcon logo = new ImageIcon(getClass().getResource("/Imagenes/LogoMin.jpg"));
+        jLLogo.setIcon(new ImageIcon(logo.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH)));
     }
+    
+    private void panelProducto(Producto p){
+        
+        GridBagConstraints gridBagConstraints;
+        JPanel jPanelNuevo;
+        JLabel jLabel;
+        
+        //panel producto
+        jPanelNuevo = new JPanel();
+        jPanelNuevo.setName(Integer.toString(p.getIDProducto()));
+        jPanelNuevo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        jPanelNuevo.setLayout(new java.awt.GridBagLayout());
+        panelDetallado(jPanelNuevo,Inicio.this);
 
-    public void paneles(Usuario usuario) {
-        if (usuario == null) {
-            System.out.println("No hay usuario en la sesion");
+        //label Imagen
+        jLabel = new JLabel();
+        ImageIcon imagen;
+        if(p.getImagen()==null){
+            imagen = new ImageIcon(getClass().getResource("/Imagenes/productoSinImagen.jpg"));
+        }else{
+            imagen = new ImageIcon(p.getImagen());
         }
-        Producto[] productos = usuario.datosproductos();
-        java.awt.GridBagConstraints gridBagConstraints;
-        JPanel producto[] = new JPanel[productos.length];
-        JLabel[] jlnomb = new JLabel[productos.length];
-        JLabel[] jlNombre = new JLabel[productos.length];
-        JLabel[] jlImagen = new JLabel[productos.length];
-        JLabel[] jlcat = new JLabel[productos.length];
-        JLabel[] jlubi = new JLabel[productos.length];
-        JLabel[] jlUbicacion = new JLabel[productos.length];
-        JLabel[] jlCategoria = new JLabel[productos.length];
-        JButton[] jbAgregarC = new JButton[productos.length];
-        JLabel[] jldesc = new JLabel[productos.length];
-        JLabel[] jlprec = new JLabel[productos.length];
-        JLabel[] jlPrecio = new JLabel[productos.length];
-        JLabel[] jlSeparador = new JLabel[productos.length];
-        JScrollPane[] jsp = new JScrollPane[productos.length];
-        JTextArea[] jtaDescripcion = new JTextArea[productos.length];
-        ImageIcon[] imagen = new ImageIcon[productos.length];
+        jLabel.setIcon(new ImageIcon(imagen.getImage().getScaledInstance(190, 190, Image.SCALE_SMOOTH)));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 10);
+        jPanelNuevo.add(jLabel, gridBagConstraints);
+        
+        //label Nombre
+        jLabel = new JLabel();
+        jLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel.setText(p.getNombre());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.insets = new java.awt.Insets(18, 10, 0, 10);
+        jPanelNuevo.add(jLabel, gridBagConstraints);
 
-        for (int a = 0; a < productos.length; a++) {
-            //Panel
-            producto[a] = new JPanel();
-            producto[a].setName(Integer.toString(productos[a].getIDProducto()));
-            producto[a].setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
-            producto[a].setPreferredSize(new Dimension(850, 160));
-            GridBagLayout Layout = new GridBagLayout();
-            Layout.columnWidths = new int[]{0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0};
-            Layout.rowHeights = new int[]{0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0};
-            producto[a].setLayout(Layout);
+        //label Precio
+        jLabel = new JLabel();
+        jLabel.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
+        jLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel.setText(Double.toString(p.getPrecio()));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.ipady = 10;
+        gridBagConstraints.insets = new java.awt.Insets(18, 10, 10, 10);
+        jPanelNuevo.add(jLabel, gridBagConstraints);
+        
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = gridx(ListaProduc.getComponents().length);
+        gridBagConstraints.gridy = gridy(ListaProduc.getComponents().length);
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
+        ListaProduc.add(jPanelNuevo, gridBagConstraints);
+    }
+    
+    private void panelDetallado (JPanel panel,JFrame frame){
+        MouseListener oyenteClick = new MouseListener(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                Producto producto = new Producto();
+                producto.setIDProducto(Integer.parseInt(panel.getName()));
+                producto.consultarPorId();
+                VistaProducto vista = new VistaProducto(producto,usuario);
+                vista.setVisible(true);
+                frame.setVisible(false);
+            }
 
-            //Etiquetas
-            jlnomb[a] = new JLabel();
-            jlnomb[a].setText("Nombre :  ");
-            jlnomb[a].setFont(new Font("Century Gothic", 0, 14));
-            gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 0;
-            gridBagConstraints.gridy = 4;
-            producto[a].add(jlnomb[a], gridBagConstraints);
+            @Override
+            public void mousePressed(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
 
-            jlcat[a] = new JLabel();
-            jlcat[a].setText("Categoria");
-            jlcat[a].setFont(new Font("Century Gothic", 0, 14));
-            gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 10;
-            gridBagConstraints.gridy = 4;
-            producto[a].add(jlcat[a], gridBagConstraints);
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
 
-            jldesc[a] = new JLabel();
-            jldesc[a].setText("Descripcion");
-            jldesc[a].setFont(new Font("Century Gothic", 0, 14));
-            gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 18;
-            gridBagConstraints.gridy = 4;
-            producto[a].add(jldesc[a], gridBagConstraints);
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
 
-            jlprec[a] = new JLabel();
-            jlprec[a].setText("Precio");
-            jlprec[a].setFont(new Font("Century Gothic", 0, 14));
-            gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 26;
-            gridBagConstraints.gridy = 4;
-            producto[a].add(jlprec[a], gridBagConstraints);
-
-            jlSeparador[a] = new JLabel();
-            jlSeparador[a].setBackground(new Color(0, 0, 0));
-            jlSeparador[a].setText("");
-            jlSeparador[a].setOpaque(true);
-            jlSeparador[a].setPreferredSize(new Dimension(1, 145));
-            gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 16;
-            gridBagConstraints.gridy = 0;
-            gridBagConstraints.gridheight = 11;
-            producto[a].add(jlSeparador[a], gridBagConstraints);
-
-            jlubi[a] = new JLabel();
-            jlubi[a].setText("Ubicacion");
-            jlubi[a].setFont(new Font("Century Gothic", 0, 1));
-            gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 8;
-            gridBagConstraints.gridy = 8;
-            producto[a].add(jlubi[a], gridBagConstraints);
-
-            //Labels con Datos del producto
-            jlNombre[a] = new JLabel();
-            jlNombre[a].setText(productos[a].getNombre());
-            jlNombre[a].setFont(new Font("Century Gothic", 0, 14));
-            gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 2;
-            gridBagConstraints.gridy = 4;
-            producto[a].add(jlNombre[a], gridBagConstraints);
-
-            jlUbicacion[a] = new JLabel();
-            jlUbicacion[a].setFont(new Font("Century Gothic", 0, 14));
-            jlUbicacion[a].setText(productos[a].getLocacion());
-            gridBagConstraints = new java.awt.GridBagConstraints();
-            gridBagConstraints.gridx = 8;
-            gridBagConstraints.gridy = 10;
-            gridBagConstraints.anchor = GridBagConstraints.NORTH;
-            producto[a].add(jlUbicacion[a], gridBagConstraints);
-
-            jlCategoria[a] = new JLabel();
-            jlCategoria[a].setText(productos[a].getCategoria());
-            jlCategoria[a].setFont(new Font("Century Gothic", 0, 14));
-            gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 14;
-            gridBagConstraints.gridy = 4;
-            producto[a].add(jlCategoria[a], gridBagConstraints);
-
-            jlPrecio[a] = new JLabel();
-            jlPrecio[a].setText(Double.toString(productos[a].getPrecio()));
-            jlPrecio[a].setFont(new Font("Century Gothic", 0, 14));
-            gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 26;
-            gridBagConstraints.gridy = 10;
-            gridBagConstraints.insets = new Insets(-60, 0, 0, 0);
-            producto[a].add(jlPrecio[a], gridBagConstraints);
-
-            jbAgregarC[a] = new JButton();
-            jbAgregarC[a].setFont(new Font("Century Gothic", 0, 14));
-            jbAgregarC[a].setText("Añadir al carrito");
-            gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 0;
-            gridBagConstraints.gridy = 10;
-            producto[a].add(jbAgregarC[a], gridBagConstraints);
-
-            jsp[a] = new JScrollPane();
-            jsp[a].setPreferredSize(new Dimension(226, 130));
-            jtaDescripcion[a] = new JTextArea();
-            jtaDescripcion[a].setColumns(20);
-            jtaDescripcion[a].setRows(5);
-            jtaDescripcion[a].setPreferredSize(new Dimension(224, 60));
-            jsp[a].setViewportView(jtaDescripcion[a]);
-
-            jlImagen[a] = new JLabel();
-            jlImagen[a].setPreferredSize(new Dimension(130, 130));
-            imagen[a] = new ImageIcon(getClass().getResource("/Imagenes/" + Integer.toString(productos[a].getIDProducto()) + ".jpg"));
-            jlImagen[a].setIcon(new ImageIcon(imagen[a].getImage().getScaledInstance(130, 130, Image.SCALE_SMOOTH)));
-            gridBagConstraints = new GridBagConstraints();
-            gridBagConstraints.gridx = 6;
-            gridBagConstraints.gridy = 0;
-            gridBagConstraints.gridheight = 11;
-            producto[a].add(jlImagen[a], gridBagConstraints);
-
-            //Agregar los paneles
-            gridBagConstraints = new java.awt.GridBagConstraints();
-            gridBagConstraints.gridx = 0;
-            gridBagConstraints.gridy = a;
-            gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-            ListaProduc.add(producto[a], gridBagConstraints);
+            @Override
+            public void mouseExited(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
+        panel.addMouseListener(oyenteClick);
+    }
+    
+    private void crearPanel(Usuario usuario){
+        if(usuario == null){
+            System.out.println("Usuario vacio");
+        }else{
+            ListaProduc.removeAll();
+            
+            Producto[] producto = usuario.datosproductos();
+            //System.out.println(producto.length);
+            for(Producto p:producto){
+                if(p!=null){
+                    panelProducto(p);
+                }else{
+                    System.out.println("El producto esta vacio");
+                }
+            }
+            this.setVisible(true);
         }
     }
-
+    
+    private int gridx(int totales){
+        int res = totales%4 ;
+        //System.out.println("Componentes en juego: "+totales+"\nColumna: "+res);
+        return res;
+    }
+    
+    private int gridy(int totales){
+        double res = (totales/4);
+        int resp = (int)res;
+        //System.out.println("Fila: "+resp);
+        return resp;
+        
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -184,6 +158,7 @@ public class Inicio extends javax.swing.JFrame {
         jPanel3 = new javax.swing.JPanel();
         jbSesionV = new javax.swing.JButton();
         jbCerrarS = new javax.swing.JButton();
+        jLLogo = new javax.swing.JLabel();
         jPanel2 = new javax.swing.JPanel();
         jtfBuscador = new javax.swing.JTextField();
         jbCarrito = new javax.swing.JButton();
@@ -199,8 +174,8 @@ public class Inicio extends javax.swing.JFrame {
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setTitle("Inicio");
         addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowActivated(java.awt.event.WindowEvent evt) {
-                formWindowActivated(evt);
+            public void windowOpened(java.awt.event.WindowEvent evt) {
+                formWindowOpened(evt);
             }
         });
 
@@ -208,11 +183,7 @@ public class Inicio extends javax.swing.JFrame {
         jPanel4.setPreferredSize(new java.awt.Dimension(1053, 1095));
         jPanel4.setLayout(new java.awt.GridBagLayout());
 
-        jPanel3.setBackground(new java.awt.Color(204, 204, 204));
-        java.awt.GridBagLayout jPanel3Layout = new java.awt.GridBagLayout();
-        jPanel3Layout.columnWidths = new int[] {0, 5, 0, 5, 0};
-        jPanel3Layout.rowHeights = new int[] {0, 5, 0, 5, 0, 5, 0, 5, 0};
-        jPanel3.setLayout(jPanel3Layout);
+        jPanel3.setLayout(new java.awt.GridBagLayout());
 
         jbSesionV.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jbSesionV.setText("Sesión Vendedor");
@@ -222,9 +193,10 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 6;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
         jPanel3.add(jbSesionV, gridBagConstraints);
 
         jbCerrarS.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
@@ -235,10 +207,19 @@ public class Inicio extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 10);
         jPanel3.add(jbCerrarS, gridBagConstraints);
+
+        jLLogo.setPreferredSize(new java.awt.Dimension(100, 100));
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridheight = 2;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 10, 10);
+        jPanel3.add(jLLogo, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -254,9 +235,9 @@ public class Inicio extends javax.swing.JFrame {
         jtfBuscador.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jtfBuscador.setText("Buscador...");
         jtfBuscador.setPreferredSize(new java.awt.Dimension(79, 30));
-        jtfBuscador.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jtfBuscadorMouseClicked(evt);
+        jtfBuscador.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfBuscadorActionPerformed(evt);
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -294,86 +275,67 @@ public class Inicio extends javax.swing.JFrame {
 
         jPanel1.setBackground(new java.awt.Color(204, 153, 255));
         jPanel1.setPreferredSize(new java.awt.Dimension(233, 1025));
-        java.awt.GridBagLayout jPanel1Layout = new java.awt.GridBagLayout();
-        jPanel1Layout.columnWidths = new int[] {0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0};
-        jPanel1Layout.rowHeights = new int[] {0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0, 5, 0};
-        jPanel1.setLayout(jPanel1Layout);
+        jPanel1.setLayout(new java.awt.GridBagLayout());
 
+        jtfPrecioMin.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jtfPrecioMin.setText("Mínimo");
-        jtfPrecioMin.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jtfPrecioMinMouseClicked(evt);
-            }
-        });
-        jtfPrecioMin.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtfPrecioMinActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.ipadx = 100;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weighty = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
         jPanel1.add(jtfPrecioMin, gridBagConstraints);
 
+        jtfPrecioMax.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jtfPrecioMax.setText("Máximo");
-        jtfPrecioMax.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                jtfPrecioMaxMouseClicked(evt);
-            }
-        });
-        jtfPrecioMax.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jtfPrecioMaxActionPerformed(evt);
-            }
-        });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 8;
-        gridBagConstraints.gridy = 10;
-        gridBagConstraints.gridwidth = 3;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
+        gridBagConstraints.ipadx = 100;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 10);
         jPanel1.add(jtfPrecioMax, gridBagConstraints);
 
-        jLabel1.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel1.setText("Categorías:");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 2;
-        gridBagConstraints.gridwidth = 9;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
         jPanel1.add(jLabel1, gridBagConstraints);
 
         jcbCategoria.setBackground(new java.awt.Color(204, 204, 255));
-        jcbCategoria.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jcbCategoria.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jcbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todo", "Electrodomésticos", "Consola y Videojuegos", "Ropa", "Deportes", "Hogar", "Jueguetería" }));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 4;
-        gridBagConstraints.gridwidth = 9;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 10);
         jPanel1.add(jcbCategoria, gridBagConstraints);
 
-        jLabel2.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
+        jLabel2.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jLabel2.setText("Precio:");
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 2;
-        gridBagConstraints.gridy = 8;
-        gridBagConstraints.gridwidth = 7;
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 2;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
         jPanel1.add(jLabel2, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.VERTICAL;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.weighty = 1.0;
         jPanel4.add(jPanel1, gridBagConstraints);
 
-        jScrollPane1.setPreferredSize(new java.awt.Dimension(820, 1025));
-
-        ListaProduc.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
-        ListaProduc.setPreferredSize(new java.awt.Dimension(820, 1025));
         ListaProduc.setLayout(new java.awt.GridBagLayout());
         jScrollPane1.setViewportView(ListaProduc);
 
@@ -387,70 +349,47 @@ public class Inicio extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 954, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.PREFERRED_SIZE, 954, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 345, Short.MAX_VALUE)
+            .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 434, Short.MAX_VALUE)
         );
 
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-
+    
     private void jbCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCarritoActionPerformed
         carritoCompras carrito = new carritoCompras();
         carrito.setVisible(true);
     }//GEN-LAST:event_jbCarritoActionPerformed
 
-    private void jtfBuscadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtfBuscadorMouseClicked
-        // TODO add your handling code here:
-        jtfBuscador.setText("");
-    }//GEN-LAST:event_jtfBuscadorMouseClicked
-
-    private void jtfPrecioMaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPrecioMaxActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_jtfPrecioMaxActionPerformed
-
-    private void jtfPrecioMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPrecioMinActionPerformed
-        // TODO add your handling code here:
-
-    }//GEN-LAST:event_jtfPrecioMinActionPerformed
-
-    private void jtfPrecioMinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtfPrecioMinMouseClicked
-        // TODO add your handling code here:
-        jtfPrecioMin.setText("");
-    }//GEN-LAST:event_jtfPrecioMinMouseClicked
-
-    private void jtfPrecioMaxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtfPrecioMaxMouseClicked
-        // TODO add your handling code here:
-        jtfPrecioMax.setText("");
-    }//GEN-LAST:event_jtfPrecioMaxMouseClicked
-
     private void jbCerrarSActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCerrarSActionPerformed
         FLogin fl = new FLogin();
         this.setVisible(false);
         fl.setVisible(true);
-        fl.usuario = new Usuario();
     }//GEN-LAST:event_jbCerrarSActionPerformed
 
     private void jbSesionVActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSesionVActionPerformed
-        // TODO add your handling code here:
-        FVendedor fv = new FVendedor();
+        FVendedor fv = new FVendedor(this.usuario);
         fv.setVisible(true);
-        fv.setExtendedState(MAXIMIZED_BOTH);
         this.setVisible(false);
     }//GEN-LAST:event_jbSesionVActionPerformed
 
-    private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-        // TODO add your handling code here:
-        paneles(usuario);
-    }//GEN-LAST:event_formWindowActivated
+    private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        crearPanel(usuario);
+    }//GEN-LAST:event_formWindowOpened
 
-    /**
-     * @param args the command line arguments
-     */
+    private void jtfBuscadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfBuscadorActionPerformed
+        Component[] comp = ListaProduc.getComponents();
+        JOptionPane.showMessageDialog(null, "Ancho: "+comp[0].getWidth()+"\nLargo: "+comp[0].getHeight());
+    }//GEN-LAST:event_jtfBuscadorActionPerformed
+    
+    public void setUsuario(Usuario usuario){
+        this.usuario = usuario;
+    }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -483,17 +422,9 @@ public class Inicio extends javax.swing.JFrame {
         });
     }
 
-    public String getUsu() {
-        return usu;
-    }
-
-    public void setUsu(String usu) {
-        this.usu = usu;
-    }
-
-
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ListaProduc;
+    private javax.swing.JLabel jLLogo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;

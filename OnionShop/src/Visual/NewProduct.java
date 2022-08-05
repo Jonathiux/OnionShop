@@ -3,26 +3,31 @@ package Visual;
 import Logic.*;
 import javax.swing.*;
 import java.awt.Image;
-import java.io.IOException;
 
 public class NewProduct extends javax.swing.JFrame {
-    GestionImg gestion = new GestionImg();
-    Usuario vendedor = FVendedor.vendedor;
-    Producto producto;
+    private GestionImg gestion = new GestionImg();
+    private Usuario vendedor;
+    private Producto producto;
     
-    public NewProduct() {
+    //Constructor
+    public NewProduct(Usuario u) {
+        this.vendedor = u;
         initComponents();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
     }
-    
-    public NewProduct(Producto p) {
+    //Constructor
+    public NewProduct(Producto p, Usuario u) {
+        this.vendedor = u;
         this.producto = p;
         initComponents();
         this.setLocationRelativeTo(null);
         this.setResizable(false);
     }
-
+    
+    public void setUsuario(Usuario u){
+        this.vendedor = u; 
+    }
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -62,56 +67,54 @@ public class NewProduct extends javax.swing.JFrame {
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.ipady = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 10);
         jPanel1.add(jLnombre, gridBagConstraints);
 
         jT_nombreProducto.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
+        gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.ipadx = 150;
         gridBagConstraints.ipady = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 10);
         jPanel1.add(jT_nombreProducto, gridBagConstraints);
 
         jLabel2.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel2.setText("Cantidad:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.ipady = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 10);
         jPanel1.add(jLabel2, gridBagConstraints);
 
         jT_Cantidad.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jT_Cantidad.setMaximumSize(new java.awt.Dimension(200, 200));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 3;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 2;
         gridBagConstraints.ipadx = 150;
         gridBagConstraints.ipady = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 10);
         jPanel1.add(jT_Cantidad, gridBagConstraints);
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel3.setText("Categoria: ");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.ipady = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 10);
         jPanel1.add(jLabel3, gridBagConstraints);
 
         jLabel4.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel4.setText("Locacion:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 13;
+        gridBagConstraints.gridy = 6;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         jPanel1.add(jLabel4, gridBagConstraints);
@@ -120,17 +123,17 @@ public class NewProduct extends javax.swing.JFrame {
         jLabel5.setText("Precio:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.ipady = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 10);
         jPanel1.add(jLabel5, gridBagConstraints);
 
         jLabel6.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jLabel6.setText("Descripcion:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = 11;
+        gridBagConstraints.gridy = 5;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.WEST;
         jPanel1.add(jLabel6, gridBagConstraints);
@@ -145,9 +148,9 @@ public class NewProduct extends javax.swing.JFrame {
         jScrollPane1.setViewportView(jT_Descripcion);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 11;
-        gridBagConstraints.gridwidth = 3;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.ipadx = 200;
         gridBagConstraints.ipady = 60;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -156,9 +159,9 @@ public class NewProduct extends javax.swing.JFrame {
 
         jT_Locacion.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 13;
-        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 6;
+        gridBagConstraints.gridwidth = 3;
         gridBagConstraints.ipadx = 365;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
@@ -167,12 +170,11 @@ public class NewProduct extends javax.swing.JFrame {
 
         jT_Precio.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 4;
         gridBagConstraints.ipadx = 150;
         gridBagConstraints.ipady = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 10);
         jPanel1.add(jT_Precio, gridBagConstraints);
 
         jLImagen.setBackground(new java.awt.Color(255, 255, 255));
@@ -182,11 +184,11 @@ public class NewProduct extends javax.swing.JFrame {
         jLImagen.setOpaque(true);
         jLImagen.setPreferredSize(new java.awt.Dimension(200, 200));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
+        gridBagConstraints.gridx = 2;
         gridBagConstraints.gridy = 1;
         gridBagConstraints.gridwidth = 2;
-        gridBagConstraints.gridheight = 9;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.gridheight = 3;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         jPanel1.add(jLImagen, gridBagConstraints);
 
         jLabel9.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
@@ -196,7 +198,8 @@ public class NewProduct extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 0;
-        gridBagConstraints.gridwidth = 8;
+        gridBagConstraints.gridwidth = 4;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.weighty = 1.0;
         jPanel1.add(jLabel9, gridBagConstraints);
@@ -209,10 +212,11 @@ public class NewProduct extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 6;
-        gridBagConstraints.gridy = 10;
+        gridBagConstraints.gridx = 2;
+        gridBagConstraints.gridy = 4;
+        gridBagConstraints.gridwidth = 2;
         gridBagConstraints.ipady = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.insets = new java.awt.Insets(10, 0, 0, 0);
         jPanel1.add(jBAbrirArchivo, gridBagConstraints);
 
@@ -224,8 +228,8 @@ public class NewProduct extends javax.swing.JFrame {
             }
         });
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 14;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 7;
         gridBagConstraints.ipady = 10;
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         jPanel1.add(jB_guardarProducto, gridBagConstraints);
@@ -235,12 +239,11 @@ public class NewProduct extends javax.swing.JFrame {
         jC_Categoria.setMinimumSize(new java.awt.Dimension(142, 25));
         jC_Categoria.setPreferredSize(new java.awt.Dimension(145, 25));
         gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 4;
-        gridBagConstraints.gridy = 5;
+        gridBagConstraints.gridx = 1;
+        gridBagConstraints.gridy = 3;
         gridBagConstraints.ipadx = 11;
         gridBagConstraints.ipady = 10;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.insets = new java.awt.Insets(0, 0, 10, 10);
+        gridBagConstraints.insets = new java.awt.Insets(0, 0, 30, 10);
         jPanel1.add(jC_Categoria, gridBagConstraints);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -266,26 +269,17 @@ public class NewProduct extends javax.swing.JFrame {
         }
     }//GEN-LAST:event_jBAbrirArchivoActionPerformed
     
-    public boolean isNumero(String num){
-        try{
-            double numero =Integer.parseInt(num);
-            return false;
-        }catch(NumberFormatException e){
-            return true;
-        }
-    }
-    
     private void jB_guardarProductoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jB_guardarProductoActionPerformed
         boolean band = true;
         
         //verifica las casillas numericas tenga valor numerico y no esten vacioas
-        if("".equals(jT_Cantidad.getText())||jT_Cantidad.getText().isBlank()||isNumero(jT_Cantidad.getText())){
+        if(jT_Cantidad.getText().isBlank()||isNumero(jT_Cantidad.getText())){
             jT_Cantidad.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
             band = false;
         } else{
             jT_Cantidad.setBorder(null);
         }
-        if("".equals(jT_Precio.getText())||jT_Precio.getText().isBlank()||isNumero(jT_Precio.getText())){
+        if(jT_Precio.getText().isBlank()||isNumero(jT_Precio.getText())){
             jT_Precio.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(255, 0, 0)));
             band = false;
         }else{
@@ -335,16 +329,11 @@ public class NewProduct extends javax.swing.JFrame {
                 producto = obtenerInfo(producto);
                 
                 if(producto.agregarProducto(vendedor)){
-                    try {
-                        System.out.println("Se ha guardado con exito");
-                        limpiarCasillas();
-                        int res = JOptionPane.showConfirmDialog(null, "Desea Añadir otro producto");
-                        if(res!=0){
-                            this.setVisible(false);
-                        }
-                        actualizarPanel();
-                    } catch (IOException ex) {
-                        System.out.println("Error "+ ex);
+                    System.out.println("Se ha guardado con exito");
+                    limpiarCasillas();
+                    int res = JOptionPane.showConfirmDialog(null, "Desea Añadir otro producto");
+                    if(res!=0){
+                        this.setVisible(false);
                     }
                 }else{
                     System.out.println("Error al guardar");
@@ -354,11 +343,6 @@ public class NewProduct extends javax.swing.JFrame {
                 if(producto.actualizarProducto()){
                     System.out.println("Se ha actualizado con exito");
                     limpiarCasillas();
-                    try {
-                        actualizarPanel();
-                    } catch (IOException ex) {
-                        System.out.println("Error" + ex);
-                    }
                     this.setVisible(false);
                 }else{
                     System.out.println("Error al actualizar");
@@ -367,11 +351,7 @@ public class NewProduct extends javax.swing.JFrame {
             
         }
     }//GEN-LAST:event_jB_guardarProductoActionPerformed
-    private void actualizarPanel() throws IOException{
-        FVendedor v = new FVendedor();
-        v.jPListaProductos.removeAll();
-        v.crearPanelesProductos(vendedor);
-    }
+    
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         if(producto != null){
             producto.consultarPorId();
@@ -388,6 +368,16 @@ public class NewProduct extends javax.swing.JFrame {
             }
         }
     }//GEN-LAST:event_formWindowOpened
+    
+    private boolean isNumero(String num){
+        try{
+            double numero = Double.parseDouble(num);
+            return false;
+        }catch(NumberFormatException e){
+            return true;
+        }
+    }
+    
     private void limpiarCasillas(){
         jT_nombreProducto.setText("");
         jC_Categoria.setSelectedIndex(0);
@@ -397,6 +387,7 @@ public class NewProduct extends javax.swing.JFrame {
         jT_Precio.setText("");
         jLImagen.setIcon(null);
     }
+    
     private Producto obtenerInfo(Producto p){
         p.setCantidad(Integer.parseInt(jT_Cantidad.getText()));
         p.setNombre(jT_nombreProducto.getText());
@@ -405,11 +396,15 @@ public class NewProduct extends javax.swing.JFrame {
         p.setLocacion(jT_Locacion.getText());
         p.setPrecio(Double.parseDouble(jT_Precio.getText()));
         if(jLImagen.getBorder()!=null){
+            if(gestion.getImagen() == null){
+                gestion.setImagen(producto.getImagen());
+            }
             p.setImagen(gestion.getImagen());
         }
         
         return p;
     }
+    
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -439,7 +434,7 @@ public class NewProduct extends javax.swing.JFrame {
         java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new NewProduct().setVisible(true);
+                new NewProduct(null).setVisible(true);
             }
         });
     }
