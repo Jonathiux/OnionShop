@@ -328,7 +328,7 @@ public class NewProduct extends javax.swing.JFrame {
                 producto = new Producto();
                 producto = obtenerInfo(producto);
                 
-                if(producto.agregarProducto(vendedor)){
+                /*if(producto.agregarProducto(vendedor)){
                     System.out.println("Se ha guardado con exito");
                     limpiarCasillas();
                     int res = JOptionPane.showConfirmDialog(null, "Desea Añadir otro producto");
@@ -337,7 +337,7 @@ public class NewProduct extends javax.swing.JFrame {
                     }
                 }else{
                     System.out.println("Error al guardar");
-                }
+                }*/
             }else{
                 producto = obtenerInfo(producto);
                 if(producto.actualizarProducto()){

@@ -174,7 +174,7 @@ public class Producto {
         return modelo;
     }
 
-    private int idProducto() {
+    /*private int idProducto() {
         Producto[] p = new Usuario().datosproductos();
         boolean band = false;
         int idProd;
@@ -231,7 +231,7 @@ public class Producto {
         } finally {
             conex.desconectar();
         }
-    }
+    }*/
 
     public boolean actualizarProducto() {
 
@@ -327,8 +327,7 @@ public class Producto {
         Producto producto;
         Conexion conex = new Conexion();
         if (conex.conectar() != null) {
-            String consultaSQL = "";
-            consultaSQL = "select * from producto as p inner join vendedor_producto as v_p on p.idproducto = v_p.idproducto";
+            String consultaSQL = "select * from producto as p inner join vendedor_producto as v_p on p.idproducto = v_p.idproducto";
 
             try {
                 PreparedStatement ps = conex.getConex().prepareStatement(consultaSQL);
@@ -351,6 +350,142 @@ public class Producto {
                 conex.desconectar();
             } catch (SQLException ex) {
 
+            }
+        }
+        return productos;
+    }
+    
+    public ArrayList<Producto> productosporcategoria(String categoria, String nombre, Double precio1, Double precio2) {
+        ArrayList<Producto> productos = new ArrayList();
+        Producto producto;
+        Conexion conex = new Conexion();
+        if (conex.conectar() != null) {
+            String consultaSQL = "select * from producto where categoria=? and nombre like ? and precio>=? and precio<=?";
+
+            try {
+                PreparedStatement ps = conex.getConex().prepareStatement(consultaSQL);
+                ps.setString(1, categoria);
+                ps.setString(2, "%"+ nombre + "%");
+                ps.setDouble(3, precio1);
+                ps.setDouble(4, precio2);
+
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    producto = new Producto();
+                    producto.setIDProducto(rs.getInt("idproducto"));
+                    producto.setCantidad(rs.getInt("cantidad"));
+                    producto.setNombre(rs.getString("nombre"));
+                    producto.setCategoria(rs.getString("categoria"));
+                    producto.setDescripcion(rs.getString("descripcion"));
+                    producto.setLocacion(rs.getString("ubicacion"));
+                    producto.setPrecio(rs.getDouble("precio"));
+                    producto.setImagen(rs.getBytes("img"));
+
+                    productos.add(producto);
+                }
+                conex.desconectar();
+            } catch (SQLException ex) {
+                System.out.println("Error prro "+ ex);
+            }
+        }
+        return productos;
+    }
+    
+    public ArrayList<Producto> productosporcategoriasola(String categoria) {
+        ArrayList<Producto> productos = new ArrayList();
+        Producto producto;
+        Conexion conex = new Conexion();
+        if (conex.conectar() != null) {
+            String consultaSQL = "select * from producto where categoria=?";
+
+            try {
+                PreparedStatement ps = conex.getConex().prepareStatement(consultaSQL);
+                ps.setString(1, categoria);
+
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    producto = new Producto();
+                    producto.setIDProducto(rs.getInt("idproducto"));
+                    producto.setCantidad(rs.getInt("cantidad"));
+                    producto.setNombre(rs.getString("nombre"));
+                    producto.setCategoria(rs.getString("categoria"));
+                    producto.setDescripcion(rs.getString("descripcion"));
+                    producto.setLocacion(rs.getString("ubicacion"));
+                    producto.setPrecio(rs.getDouble("precio"));
+                    producto.setImagen(rs.getBytes("img"));
+
+                    productos.add(producto);
+                }
+                conex.desconectar();
+            } catch (SQLException ex) {
+                System.out.println("Error prro "+ ex);
+            }
+        }
+        return productos;
+    }
+    
+    public ArrayList<Producto> productospornombre(String nombre) {
+        ArrayList<Producto> productos = new ArrayList();
+        Producto producto;
+        Conexion conex = new Conexion();
+        if (conex.conectar() != null) {
+            String consultaSQL = "select * from producto where nombre like ?";
+
+            try {
+                PreparedStatement ps = conex.getConex().prepareStatement(consultaSQL);
+                ps.setString(1, "%"+nombre+"%");
+
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    producto = new Producto();
+                    producto.setIDProducto(rs.getInt("idproducto"));
+                    producto.setCantidad(rs.getInt("cantidad"));
+                    producto.setNombre(rs.getString("nombre"));
+                    producto.setCategoria(rs.getString("categoria"));
+                    producto.setDescripcion(rs.getString("descripcion"));
+                    producto.setLocacion(rs.getString("ubicacion"));
+                    producto.setPrecio(rs.getDouble("precio"));
+                    producto.setImagen(rs.getBytes("img"));
+
+                    productos.add(producto);
+                }
+                conex.desconectar();
+            } catch (SQLException ex) {
+                System.out.println("Error prro "+ ex);
+            }
+        }
+        return productos;
+    }
+    
+    public ArrayList<Producto> productosporprecio(Double precio1, Double precio2) {
+        ArrayList<Producto> productos = new ArrayList();
+        Producto producto;
+        Conexion conex = new Conexion();
+        if (conex.conectar() != null) {
+            String consultaSQL = "select * from producto where precio>=? and precio<=?";
+
+            try {
+                PreparedStatement ps = conex.getConex().prepareStatement(consultaSQL);
+                ps.setDouble(1, precio1);
+                ps.setDouble(2, precio2);
+
+                ResultSet rs = ps.executeQuery();
+                while (rs.next()) {
+                    producto = new Producto();
+                    producto.setIDProducto(rs.getInt("idproducto"));
+                    producto.setCantidad(rs.getInt("cantidad"));
+                    producto.setNombre(rs.getString("nombre"));
+                    producto.setCategoria(rs.getString("categoria"));
+                    producto.setDescripcion(rs.getString("descripcion"));
+                    producto.setLocacion(rs.getString("ubicacion"));
+                    producto.setPrecio(rs.getDouble("precio"));
+                    producto.setImagen(rs.getBytes("img"));
+
+                    productos.add(producto);
+                }
+                conex.desconectar();
+            } catch (SQLException ex) {
+                System.out.println("Error prro "+ ex);
             }
         }
         return productos;

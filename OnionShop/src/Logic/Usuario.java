@@ -184,9 +184,10 @@ public class Usuario {
         return total;
     }
     
-    public Producto[] datosproductos(){
+    public ArrayList<Producto> datosproductos(){
         Conexion conexion = new Conexion();
-        Producto[] productos = new Producto[tproductos()];
+        ArrayList<Producto> productos = new ArrayList();
+        Producto producto;
             if(conexion.conectar()==null){
                 System.out.println("No se ha podido conectar");
             }else{
@@ -198,6 +199,7 @@ public class Usuario {
                 ResultSet rs = ps.executeQuery();
                 int a=0;
                 while(rs.next()){
+                    producto = new Producto();
                     int idproducto = rs.getInt("idproducto");
                     int cantidad = rs.getInt("cantidad");
                     double precio = rs.getDouble("precio");
@@ -207,16 +209,15 @@ public class Usuario {
                     String descripcion = rs.getString("descripcion");
                     byte[] imagen = rs.getBytes("img");
                     
-                    productos[a]=new Producto();
-                    productos[a].setNombre(nombre);
-                    productos[a].setIDProducto(idproducto);
-                    productos[a].setCategoria(categoria);
-                    productos[a].setCantidad(cantidad);
-                    productos[a].setPrecio(precio);
-                    productos[a].setLocacion(ubicacion);
-                    productos[a].setDescripcion(descripcion);
-                    productos[a].setImagen(imagen);
-                    a++;
+                    producto.setNombre(nombre);
+                    producto.setIDProducto(idproducto);
+                    producto.setCategoria(categoria);
+                    producto.setCantidad(cantidad);
+                    producto.setPrecio(precio);
+                    producto.setLocacion(ubicacion);
+                    producto.setDescripcion(descripcion);
+                    producto.setImagen(imagen);
+                    productos.add(producto);
                 }
                 conexion.desconectar();
                 }catch(SQLException ex){

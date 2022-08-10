@@ -4,41 +4,42 @@ import Logic.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.ArrayList;
 
 public class Inicio extends javax.swing.JFrame {
-    
+
     private Usuario usuario;
-    
+
     public Inicio() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
         Imagenes();
     }
-    
-    private void Imagenes(){        
+
+    private void Imagenes() {
         ImageIcon logo = new ImageIcon(getClass().getResource("/Imagenes/LogoMin.jpg"));
         jLLogo.setIcon(new ImageIcon(logo.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH)));
     }
-    
-    private void panelProducto(Producto p){
-        
+
+    private void panelProducto(Producto p) {
+
         GridBagConstraints gridBagConstraints;
         JPanel jPanelNuevo;
         JLabel jLabel;
-        
+
         //panel producto
         jPanelNuevo = new JPanel();
         jPanelNuevo.setName(Integer.toString(p.getIDProducto()));
         jPanelNuevo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPanelNuevo.setLayout(new java.awt.GridBagLayout());
-        panelDetallado(jPanelNuevo,Inicio.this);
+        panelDetallado(jPanelNuevo, Inicio.this);
 
         //label Imagen
         jLabel = new JLabel();
         ImageIcon imagen;
-        if(p.getImagen()==null){
+        if (p.getImagen() == null) {
             imagen = new ImageIcon(getClass().getResource("/Imagenes/productoSinImagen.jpg"));
-        }else{
+        } else {
             imagen = new ImageIcon(p.getImagen());
         }
         jLabel.setIcon(new ImageIcon(imagen.getImage().getScaledInstance(190, 190, Image.SCALE_SMOOTH)));
@@ -48,7 +49,7 @@ public class Inicio extends javax.swing.JFrame {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 10);
         jPanelNuevo.add(jLabel, gridBagConstraints);
-        
+
         //label Nombre
         jLabel = new JLabel();
         jLabel.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
@@ -72,7 +73,7 @@ public class Inicio extends javax.swing.JFrame {
         gridBagConstraints.ipady = 10;
         gridBagConstraints.insets = new java.awt.Insets(18, 10, 10, 10);
         jPanelNuevo.add(jLabel, gridBagConstraints);
-        
+
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = gridx(ListaProduc.getComponents().length);
         gridBagConstraints.gridy = gridy(ListaProduc.getComponents().length);
@@ -81,15 +82,15 @@ public class Inicio extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
         ListaProduc.add(jPanelNuevo, gridBagConstraints);
     }
-    
-    private void panelDetallado (JPanel panel,JFrame frame){
-        MouseListener oyenteClick = new MouseListener(){
+
+    private void panelDetallado(JPanel panel, JFrame frame) {
+        MouseListener oyenteClick = new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 Producto producto = new Producto();
                 producto.setIDProducto(Integer.parseInt(panel.getName()));
                 producto.consultarPorId();
-                VistaProducto vista = new VistaProducto(producto,usuario);
+                VistaProducto vista = new VistaProducto(producto, usuario);
                 vista.setVisible(true);
                 frame.setVisible(false);
             }
@@ -116,39 +117,34 @@ public class Inicio extends javax.swing.JFrame {
         };
         panel.addMouseListener(oyenteClick);
     }
-    
-    private void crearPanel(Usuario usuario){
-        if(usuario == null){
-            System.out.println("Usuario vacio");
-        }else{
-            ListaProduc.removeAll();
-            
-            Producto[] producto = usuario.datosproductos();
-            //System.out.println(producto.length);
-            for(Producto p:producto){
-                if(p!=null){
-                    panelProducto(p);
-                }else{
-                    System.out.println("El producto esta vacio");
-                }
+
+    private void crearPanel(ArrayList<Producto> producto) {
+        ListaProduc.removeAll();
+        //System.out.println(producto.length);
+        for (Producto p : producto) {
+            if (p != null) {
+                panelProducto(p);
+            } else {
+                System.out.println("El producto esta vacio");
             }
             this.setVisible(true);
         }
     }
-    
-    private int gridx(int totales){
-        int res = totales%4 ;
+
+    private int gridx(int totales) {
+        int res = totales % 4;
         //System.out.println("Componentes en juego: "+totales+"\nColumna: "+res);
         return res;
     }
-    
-    private int gridy(int totales){
-        double res = (totales/4);
-        int resp = (int)res;
+
+    private int gridy(int totales) {
+        double res = (totales / 4);
+        int resp = (int) res;
         //System.out.println("Fila: "+resp);
         return resp;
-        
+
     }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -168,6 +164,7 @@ public class Inicio extends javax.swing.JFrame {
         jLabel1 = new javax.swing.JLabel();
         jcbCategoria = new javax.swing.JComboBox<>();
         jLabel2 = new javax.swing.JLabel();
+        jButton1 = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         ListaProduc = new javax.swing.JPanel();
 
@@ -235,6 +232,11 @@ public class Inicio extends javax.swing.JFrame {
         jtfBuscador.setFont(new java.awt.Font("Century Gothic", 0, 12)); // NOI18N
         jtfBuscador.setText("Buscador...");
         jtfBuscador.setPreferredSize(new java.awt.Dimension(79, 30));
+        jtfBuscador.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtfBuscadorMouseClicked(evt);
+            }
+        });
         jtfBuscador.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jtfBuscadorActionPerformed(evt);
@@ -279,6 +281,21 @@ public class Inicio extends javax.swing.JFrame {
 
         jtfPrecioMin.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jtfPrecioMin.setText("Mínimo");
+        jtfPrecioMin.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtfPrecioMinMouseClicked(evt);
+            }
+        });
+        jtfPrecioMin.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfPrecioMinActionPerformed(evt);
+            }
+        });
+        jtfPrecioMin.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtfPrecioMinKeyPressed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;
@@ -290,6 +307,26 @@ public class Inicio extends javax.swing.JFrame {
 
         jtfPrecioMax.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
         jtfPrecioMax.setText("Máximo");
+        jtfPrecioMax.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                jtfPrecioMaxFocusGained(evt);
+            }
+        });
+        jtfPrecioMax.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jtfPrecioMaxMouseClicked(evt);
+            }
+        });
+        jtfPrecioMax.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jtfPrecioMaxActionPerformed(evt);
+            }
+        });
+        jtfPrecioMax.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jtfPrecioMaxKeyPressed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 3;
@@ -310,7 +347,17 @@ public class Inicio extends javax.swing.JFrame {
 
         jcbCategoria.setBackground(new java.awt.Color(204, 204, 255));
         jcbCategoria.setFont(new java.awt.Font("Century Gothic", 0, 14)); // NOI18N
-        jcbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todo", "Electrodomésticos", "Consola y Videojuegos", "Ropa", "Deportes", "Hogar", "Jueguetería" }));
+        jcbCategoria.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todo", "Electrodomesticos", "Consolas y Videojuegos", "Ropa", "Deportes", "Hogar", "Jugueteria" }));
+        jcbCategoria.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jcbCategoriaMouseClicked(evt);
+            }
+        });
+        jcbCategoria.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jcbCategoriaActionPerformed(evt);
+            }
+        });
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 1;
@@ -328,6 +375,18 @@ public class Inicio extends javax.swing.JFrame {
         gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 0);
         jPanel1.add(jLabel2, gridBagConstraints);
+
+        jButton1.setText("Buscar");
+        jButton1.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButton1MouseClicked(evt);
+            }
+        });
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 7;
+        gridBagConstraints.gridwidth = 2;
+        jPanel1.add(jButton1, gridBagConstraints);
 
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -359,7 +418,7 @@ public class Inicio extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
-    
+
     private void jbCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCarritoActionPerformed
         carritoCompras carrito = new carritoCompras();
         carrito.setVisible(true);
@@ -378,18 +437,108 @@ public class Inicio extends javax.swing.JFrame {
     }//GEN-LAST:event_jbSesionVActionPerformed
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
-        crearPanel(usuario);
+        crearPanel(usuario.datosproductos());
     }//GEN-LAST:event_formWindowOpened
 
     private void jtfBuscadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfBuscadorActionPerformed
         Component[] comp = ListaProduc.getComponents();
-        JOptionPane.showMessageDialog(null, "Ancho: "+comp[0].getWidth()+"\nLargo: "+comp[0].getHeight());
+        //JOptionPane.showMessageDialog(null, "Ancho: " + comp[0].getWidth() + "\nLargo: " + comp[0].getHeight());
+        String nombre = jtfBuscador.getText();
+        Producto produ = new Producto();
+        crearPanel(produ.productospornombre(nombre));
     }//GEN-LAST:event_jtfBuscadorActionPerformed
-    
-    public void setUsuario(Usuario usuario){
+
+    private void jcbCategoriaMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jcbCategoriaMouseClicked
+        // TODO add your handling code here:
+        
+        //JOptionPane.showMessageDialog(null, produ.productosporcategoria(categoria, nombre, precio1, precio2).get(0).getNombre());
+    }//GEN-LAST:event_jcbCategoriaMouseClicked
+
+    private void jcbCategoriaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbCategoriaActionPerformed
+        String categoria = jcbCategoria.getSelectedItem().toString();
+        if(categoria=="Todo"){
+            crearPanel(usuario.datosproductos());
+        } else {
+            Producto produ = new Producto();
+            crearPanel(produ.productosporcategoriasola(categoria));
+        }
+    }//GEN-LAST:event_jcbCategoriaActionPerformed
+
+    private void jtfPrecioMinActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPrecioMinActionPerformed
+        // TODO add your handling code here:
+        Double precio1 = Double.parseDouble(jtfPrecioMin.getText());
+        Double precio2 = Double.parseDouble(jtfPrecioMax.getText());
+        Producto produ = new Producto();
+        crearPanel(produ.productosporprecio(precio1, precio2));
+    }//GEN-LAST:event_jtfPrecioMinActionPerformed
+
+    private void jtfPrecioMaxActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfPrecioMaxActionPerformed
+        // TODO add your handling code here:
+        Double precio1 = Double.parseDouble(jtfPrecioMin.getText());
+        Double precio2 = Double.parseDouble(jtfPrecioMax.getText());
+        Producto produ = new Producto();
+        crearPanel(produ.productosporprecio(precio1, precio2));
+    }//GEN-LAST:event_jtfPrecioMaxActionPerformed
+
+    private void jtfBuscadorMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtfBuscadorMouseClicked
+        // TODO add your handling code here:
+        jtfBuscador.setText("");
+    }//GEN-LAST:event_jtfBuscadorMouseClicked
+
+    private void jtfPrecioMinMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtfPrecioMinMouseClicked
+        // TODO add your handling code here:
+        jtfPrecioMin.setText("");
+    }//GEN-LAST:event_jtfPrecioMinMouseClicked
+
+    private void jtfPrecioMaxMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jtfPrecioMaxMouseClicked
+        // TODO add your handling code here:
+        jtfPrecioMax.setText("");
+    }//GEN-LAST:event_jtfPrecioMaxMouseClicked
+
+    private void jButton1MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButton1MouseClicked
+        // TODO add your handling code here:
+        ListaProduc.removeAll();
+        String categoria = jcbCategoria.getSelectedItem().toString();
+        String nombre = jtfBuscador.getText();
+        Double precio1 = Double.parseDouble(jtfPrecioMin.getText());
+        Double precio2 = Double.parseDouble(jtfPrecioMax.getText());
+        Producto produ = new Producto();
+        crearPanel(produ.productosporcategoria(categoria, nombre, precio1, precio2));
+        
+    }//GEN-LAST:event_jButton1MouseClicked
+
+    private void jtfPrecioMaxFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_jtfPrecioMaxFocusGained
+        
+    }//GEN-LAST:event_jtfPrecioMaxFocusGained
+
+    private void jtfPrecioMaxKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfPrecioMaxKeyPressed
+        // TODO add your handling code here:
+        /*try{
+        Double precio1 = Double.parseDouble(jtfPrecioMin.getText());
+        Double precio2 = Double.parseDouble(jtfPrecioMax.getText());
+        Producto produ = new Producto();
+        crearPanel(produ.productosporprecio(precio1, precio2));
+        }catch(NumberFormatException ex){
+            System.out.println("jijij "+ ex);
+        }*/
+    }//GEN-LAST:event_jtfPrecioMaxKeyPressed
+
+    private void jtfPrecioMinKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jtfPrecioMinKeyPressed
+        // TODO add your handling code here:
+        /*try{
+        Double precio1 = Double.parseDouble(jtfPrecioMin.getText());
+        Double precio2 = Double.parseDouble(jtfPrecioMax.getText());
+        Producto produ = new Producto();
+        crearPanel(produ.productosporprecio(precio1, precio2));
+        }catch(NumberFormatException ex){
+            System.out.println("Te equivocaste madafakar" + ex);
+        }*/
+    }//GEN-LAST:event_jtfPrecioMinKeyPressed
+
+    public void setUsuario(Usuario usuario) {
         this.usuario = usuario;
     }
-    
+
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
@@ -424,6 +573,7 @@ public class Inicio extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel ListaProduc;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLLogo;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
