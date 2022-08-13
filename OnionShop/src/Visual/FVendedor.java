@@ -5,8 +5,9 @@ import java.awt.*;
 import javax.swing.*;
 import Logic.*;
 import java.awt.event.*;
+import java.awt.event.MouseListener;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.util.*;
 
 
 public class FVendedor extends javax.swing.JFrame {
@@ -15,7 +16,7 @@ public class FVendedor extends javax.swing.JFrame {
     
     public FVendedor(Usuario u) {
         this.vendedor = u;
-        fondo();
+        //fondo();
         initComponents();
         this.setLocationRelativeTo(null);
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -30,6 +31,7 @@ public class FVendedor extends javax.swing.JFrame {
         jPanel2 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jLNombre = new javax.swing.JLabel();
+        jLLogo = new javax.swing.JLabel();
         jPanel3 = new javax.swing.JPanel();
         jB_productoNuevo = new javax.swing.JButton();
         jB_eliminarTodo = new javax.swing.JButton();
@@ -40,7 +42,6 @@ public class FVendedor extends javax.swing.JFrame {
         jLNotificaciones = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         jPListaNotificaciones = new javax.swing.JPanel();
-        jBActualizarPanel = new javax.swing.JButton();
         barraMenu = new javax.swing.JMenuBar();
         menu = new javax.swing.JMenu();
         sesionComprador = new javax.swing.JMenuItem();
@@ -62,10 +63,13 @@ public class FVendedor extends javax.swing.JFrame {
         jPanel1.setPreferredSize(new java.awt.Dimension(700, 700));
         jPanel1.setLayout(new java.awt.BorderLayout());
 
+        jPanel2.setPreferredSize(new java.awt.Dimension(831, 110));
+
         jLabel1.setFont(new java.awt.Font("Arial Black", 1, 36)); // NOI18N
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLabel1.setText("Ventas Publicadas");
 
+        jLNombre.setFont(new java.awt.Font("Tahoma", 0, 13)); // NOI18N
         jLNombre.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         jLNombre.setText("Hola de nuevo....");
 
@@ -73,11 +77,14 @@ public class FVendedor extends javax.swing.JFrame {
         jPanel2.setLayout(jPanel2Layout);
         jPanel2Layout.setHorizontalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(jPanel2Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jLNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel2Layout.createSequentialGroup()
+                .addGap(20, 20, 20)
+                .addComponent(jLLogo, javax.swing.GroupLayout.PREFERRED_SIZE, 100, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 695, Short.MAX_VALUE)
+                    .addComponent(jLNombre, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
-            .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 700, Short.MAX_VALUE)
         );
         jPanel2Layout.setVerticalGroup(
             jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -85,11 +92,15 @@ public class FVendedor extends javax.swing.JFrame {
                 .addComponent(jLabel1)
                 .addGap(19, 19, 19)
                 .addComponent(jLNombre)
-                .addGap(0, 11, Short.MAX_VALUE))
+                .addGap(0, 23, Short.MAX_VALUE))
+            .addGroup(jPanel2Layout.createSequentialGroup()
+                .addComponent(jLLogo, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         jPanel1.add(jPanel2, java.awt.BorderLayout.PAGE_START);
 
+        jB_productoNuevo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jB_productoNuevo.setText("Producto nuevo");
         jB_productoNuevo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -97,6 +108,7 @@ public class FVendedor extends javax.swing.JFrame {
             }
         });
 
+        jB_eliminarTodo.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         jB_eliminarTodo.setText("Eliminar Todos Los productos");
         jB_eliminarTodo.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -119,6 +131,7 @@ public class FVendedor extends javax.swing.JFrame {
         gridBagConstraints.weighty = 1.0;
         jPanel4.add(jScrollPane2, gridBagConstraints);
 
+        jPNotificaciones.setBackground(new java.awt.Color(204, 153, 255));
         jPNotificaciones.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
         jPNotificaciones.setAlignmentX(5.0F);
         jPNotificaciones.setAlignmentY(5.0F);
@@ -137,6 +150,7 @@ public class FVendedor extends javax.swing.JFrame {
         jScrollPane1.setBorder(new javax.swing.border.MatteBorder(null));
         jScrollPane1.setPreferredSize(new java.awt.Dimension(200, 200));
 
+        jPListaNotificaciones.setBackground(new java.awt.Color(204, 153, 255));
         jPListaNotificaciones.setName(""); // NOI18N
         jPListaNotificaciones.setLayout(new java.awt.GridBagLayout());
         jScrollPane1.setViewportView(jPListaNotificaciones);
@@ -158,13 +172,6 @@ public class FVendedor extends javax.swing.JFrame {
         gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 0);
         jPanel4.add(jPNotificaciones, gridBagConstraints);
 
-        jBActualizarPanel.setText("Actualizar Panel");
-        jBActualizarPanel.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jBActualizarPanelActionPerformed(evt);
-            }
-        });
-
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
         jPanel3Layout.setHorizontalGroup(
@@ -176,9 +183,8 @@ public class FVendedor extends javax.swing.JFrame {
                         .addComponent(jB_productoNuevo)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jB_eliminarTodo)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(jBActualizarPanel))
-                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 680, Short.MAX_VALUE))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 811, Short.MAX_VALUE))
                 .addContainerGap())
         );
         jPanel3Layout.setVerticalGroup(
@@ -187,10 +193,9 @@ public class FVendedor extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jB_productoNuevo)
-                    .addComponent(jB_eliminarTodo)
-                    .addComponent(jBActualizarPanel))
+                    .addComponent(jB_eliminarTodo))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jPanel4, javax.swing.GroupLayout.DEFAULT_SIZE, 503, Short.MAX_VALUE)
                 .addGap(19, 19, 19))
         );
 
@@ -233,7 +238,7 @@ public class FVendedor extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 831, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -254,9 +259,122 @@ public class FVendedor extends javax.swing.JFrame {
             
         }
     
-    protected void panelProducto(Producto p){
+    protected void panelNotificaciones(Notificacion n,boolean band){
         
-        java.awt.GridBagConstraints gridBagConstraints;
+        GridBagConstraints gridBagConstraints;
+        JPanel panelNuevo;
+        JLabel label;
+        JTextArea jTarea;
+        JScrollPane jScrollPane;
+        Object[] panelescreados = jPListaNotificaciones.getComponents();
+        
+        panelNuevo = new JPanel();
+        panelNuevo.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
+        if(n.getVisto()!=0){//no se ah abierto
+            panelNuevo.setBackground(Color.gray);
+        }else{
+            panelNuevo.setBackground(new java.awt.Color(170, 196, 173));
+        }
+        panelNuevo.setPreferredSize(new java.awt.Dimension(100, 100));
+        panelNuevo.setLayout(new java.awt.GridBagLayout());
+        
+        label = new JLabel();
+        label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        label.setText(n.getObjeto());
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 0;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.insets = new java.awt.Insets(0, 10, 0, 10);
+        panelNuevo.add(label, gridBagConstraints);
+
+        jTarea = new JTextArea();
+        jScrollPane = new JScrollPane();
+        jTarea.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        jTarea.setLineWrap(true);
+        jTarea.setWrapStyleWord(true);
+        jTarea.setEditable(false);
+        if(n.getVisto()!=0){//no se ah abierto
+            jTarea.setBackground(Color.gray);
+        }else{
+            jTarea.setBackground(new java.awt.Color(170, 196, 173));
+        }
+        cambiarAVisto(panelNuevo,jTarea);
+        jTarea.setText(n.getDescripcion());
+        jScrollPane.setViewportView(jTarea);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.weightx = 1.0;
+        gridBagConstraints.insets = new java.awt.Insets(6, 10, 11, 10);
+        panelNuevo.add(jScrollPane, gridBagConstraints);
+
+        gridBagConstraints = new java.awt.GridBagConstraints();
+        gridBagConstraints.gridx = 0;
+        gridBagConstraints.gridy = panelescreados.length + 1;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
+        gridBagConstraints.weightx = 1.0;
+        if(band){
+            gridBagConstraints.weighty = 1.0;
+        }
+        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 10);
+        jPListaNotificaciones.add(panelNuevo, gridBagConstraints);
+    }
+    
+    protected void cambiarAVisto(JPanel panel, JTextArea area){
+        MouseListener oyebteMouse = new MouseListener(){
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                
+            }
+
+            @Override
+            public void mousePressed(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+            
+        };
+        panel.addMouseListener(oyebteMouse);
+    }
+    
+    protected void crearPanelesNotificaciones(){
+        boolean band = false;
+        int i = 1;
+        Notificacion notify = new Notificacion();
+        notify.setIdusuario(vendedor.getIdUsuario());
+        ArrayList<Notificacion> notificaciones = notify.consltarPorId();
+        for (Notificacion notificacion : notificaciones) {
+            if(i==notificaciones.size()){
+                band = true;
+            }
+            panelNotificaciones(notificacion,band);
+            i++;
+        }
+        this.setVisible(true);
+    }
+    
+    protected void panelProducto(Producto p, boolean element){
+        
+        GridBagConstraints gridBagConstraints;
         JPanel panelNuevo;
         JLabel label = new JLabel();
         JScrollPane scrollPane = new JScrollPane();
@@ -274,7 +392,7 @@ public class FVendedor extends javax.swing.JFrame {
 
         //Label nombre de producto
         label = new JLabel();
-        label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         label.setText(p.getNombre());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -325,7 +443,7 @@ public class FVendedor extends javax.swing.JFrame {
 
         //label cantidad
         label = new JLabel();
-        label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         label.setText("Cantidad:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -337,7 +455,7 @@ public class FVendedor extends javax.swing.JFrame {
 
         //label precio
         label = new JLabel();
-        label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         label.setText("Precio:");
         label.setVerticalAlignment(javax.swing.SwingConstants.BOTTOM);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -349,7 +467,7 @@ public class FVendedor extends javax.swing.JFrame {
 
         //label categoria
         label = new JLabel();
-        label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         label.setText("Categoria:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 2;
@@ -361,7 +479,7 @@ public class FVendedor extends javax.swing.JFrame {
 
         //label direccion
         label = new JLabel();
-        label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         label.setText("Direccion:");
         label.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         gridBagConstraints = new java.awt.GridBagConstraints();
@@ -374,7 +492,7 @@ public class FVendedor extends javax.swing.JFrame {
 
         //label descripcion
         label = new JLabel(); 
-        label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         label.setText("Descripcion:");
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 5;
@@ -390,9 +508,11 @@ public class FVendedor extends javax.swing.JFrame {
         scrollPane.setMaximumSize(new java.awt.Dimension(100, 50));
         //textArea de desc
         areaText = new JTextArea();
+        areaText.setFont(new java.awt.Font("Tahoma", 0, 15));
         areaText.setLineWrap(true);
         areaText.setWrapStyleWord(true);
         areaText.setEditable(false);
+        areaText.setBackground(new Color(0,0,0,0));
         areaText.setText(p.getDescripcion());
         areaText.setColumns(1);
         areaText.setRows(5);
@@ -411,7 +531,7 @@ public class FVendedor extends javax.swing.JFrame {
 
         //cantidadAsig
         label = new JLabel();
-        label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         label.setText(Integer.toString(p.getCantidad()));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -423,7 +543,7 @@ public class FVendedor extends javax.swing.JFrame {
 
         //CategoriaAsig
         label = new JLabel();
-        label.setFont(new java.awt.Font("Tahoma", 0, 14));
+        label.setFont(new java.awt.Font("Tahoma", 0, 18));
         label.setText(p.getCategoria());
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 3;
@@ -435,7 +555,7 @@ public class FVendedor extends javax.swing.JFrame {
 
         //DireccionAsig
         label = new JLabel();
-        label.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
+        label.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
         label.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
         label.setText(p.getLocacion());
         label.setVerticalAlignment(javax.swing.SwingConstants.TOP);
@@ -484,22 +604,31 @@ public class FVendedor extends javax.swing.JFrame {
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = panelescreados.length + 1;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
+        gridBagConstraints.fill = java.awt.GridBagConstraints.HORIZONTAL;
+        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTH;
         gridBagConstraints.weightx = 1.0;
+        if(element){
+            gridBagConstraints.weighty = 1.0;
+        }
         gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 10);
         jPListaProductos.add(panelNuevo, gridBagConstraints);
         
     }
     
     private void crearPanelesProductos(Usuario usuario) throws IOException{
+        boolean band = false;
+        int i=1;
         if(usuario == null){
             System.out.println("El objeto esta vacio");
         }else{
             jPListaProductos.removeAll();
-            ArrayList<Producto> producto = usuario.productos();
-            for(Producto p:producto){
-                panelProducto(p);
+            ArrayList<Producto> productos = usuario.productos();
+            for(Producto p:productos){
+                if(i==productos.size()){
+                    band = true;
+                }
+                panelProducto(p,band);
+                i++;
             }
             this.setVisible(true);
         }
@@ -524,6 +653,7 @@ public class FVendedor extends javax.swing.JFrame {
                 }
             }
         };
+        this.setVisible(true);
         boton.addActionListener(oyenteBoton);
     }
     
@@ -583,34 +713,16 @@ public class FVendedor extends javax.swing.JFrame {
         System.exit(0);
     }//GEN-LAST:event_salirActionPerformed
 
-    private void jBActualizarPanelActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBActualizarPanelActionPerformed
-        JPanel panelNuevo = new JPanel();
-        panelNuevo.setName("a");
-        panelNuevo.setPreferredSize(new Dimension(600,200));
-        panelNuevo.setMinimumSize(new Dimension(500,50));
-        panelNuevo.setLayout(new GridBagLayout());
-        
-        //agregar el panel de Producto al panel de la lista
-        GridBagConstraints gridBagConstraints = new java.awt.GridBagConstraints();
-        gridBagConstraints.gridx = 0;
-        gridBagConstraints.gridy = jPListaNotificaciones.getComponents().length;
-        gridBagConstraints.fill = java.awt.GridBagConstraints.BOTH;
-        gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
-        gridBagConstraints.weightx = 1.0;
-        gridBagConstraints.insets = new java.awt.Insets(10, 10, 0, 10);
-        jPListaNotificaciones.add(panelNuevo, gridBagConstraints);
-        jPListaNotificaciones.setBackground(Color.red);
-        this.setVisible(true);
-    }//GEN-LAST:event_jBActualizarPanelActionPerformed
-
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
+        ImageIcon logo = new ImageIcon(getClass().getResource("/Imagenes/LogoMin.jpg"));
+        jLLogo.setIcon(new ImageIcon(logo.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH)));
         try {
             if(!vendedor.comprobarVendedor()){
                int res = JOptionPane.showConfirmDialog(null, "Usted se esta registrando como Vendedor \n¿Desea continuar?");
                if(res==0){
                    if(vendedor.convertirVendedor()){
                        JOptionPane.showMessageDialog(rootPane, "Felicidades!!\nPuedes comenzar a publicar tus productos");
-                       jLNombre.setText("Bienvenido "+vendedor.getNombre());    
+                       jLNombre.setText("Bienvenid@ "+vendedor.getNombre());    
                    }
                }else{
                    this.setVisible(false);
@@ -620,6 +732,7 @@ public class FVendedor extends javax.swing.JFrame {
                }
             }else{
                 crearPanelesProductos(vendedor);
+                crearPanelesNotificaciones();
                 jLNombre.setText("Bienvenido "+vendedor.getNombre());
             }
             
@@ -667,9 +780,9 @@ public class FVendedor extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenuBar barraMenu;
     private javax.swing.JMenuItem cerrarSesion;
-    private javax.swing.JButton jBActualizarPanel;
     private javax.swing.JButton jB_eliminarTodo;
     private javax.swing.JButton jB_productoNuevo;
+    private javax.swing.JLabel jLLogo;
     private javax.swing.JLabel jLNombre;
     private javax.swing.JLabel jLNotificaciones;
     private javax.swing.JLabel jLabel1;

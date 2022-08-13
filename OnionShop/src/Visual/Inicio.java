@@ -9,7 +9,6 @@ import java.util.ArrayList;
 public class Inicio extends javax.swing.JFrame {
 
     private Usuario usuario;
-
     public Inicio() {
         initComponents();
         this.setExtendedState(MAXIMIZED_BOTH);
@@ -107,12 +106,12 @@ public class Inicio extends javax.swing.JFrame {
 
             @Override
             public void mouseEntered(MouseEvent e) {
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                panel.setBackground(Color.gray);
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                panel.setBackground(null);
             }
         };
         panel.addMouseListener(oyenteClick);
@@ -421,6 +420,7 @@ public class Inicio extends javax.swing.JFrame {
 
     private void jbCarritoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbCarritoActionPerformed
         carritoCompras carrito = new carritoCompras();
+        carrito.usuario=this.usuario;
         carrito.setVisible(true);
     }//GEN-LAST:event_jbCarritoActionPerformed
 
@@ -438,6 +438,7 @@ public class Inicio extends javax.swing.JFrame {
 
     private void formWindowOpened(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowOpened
         crearPanel(usuario.datosproductos());
+        
     }//GEN-LAST:event_formWindowOpened
 
     private void jtfBuscadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jtfBuscadorActionPerformed

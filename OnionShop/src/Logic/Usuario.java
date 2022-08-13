@@ -5,9 +5,18 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class Usuario {
-    private int idUsuario;
+    private int idUsuario, idCarrito;
     long telefono;
     private String nombre, apellidos, direccion,nombUsuario,contraseña,tipo_usuario;
+    public Carrito carrito = new Carrito();
+    
+    public int getIdCarrito() {
+        return idCarrito;
+    }
+
+    public void setIdCarrito(int idCarrito) {
+        this.idCarrito = idCarrito;
+    }
 
     public String getTipo_usuario() {
         return tipo_usuario;
@@ -90,7 +99,7 @@ public class Usuario {
             mensaje="No se ha podido conectar";
         }else{
             String consultaSQL1 ="select IDusuario from usuario";
-            String consultaSQL ="insert into usuario values(?,?,?,?,?,?,?,?)";
+            String consultaSQL ="insert into usuario values(?,?,?,?,?,?,?,?,?)";
             try{
                 PreparedStatement ps2 = conexion.getConex().prepareStatement(consultaSQL1);
                 ResultSet rs = ps2.executeQuery();
@@ -109,6 +118,7 @@ public class Usuario {
                 ps.setString(9, "Usuario");
                 ps.executeUpdate();
                 mensaje="Usuario registrado";
+                idCarrito=idUsuario;
                 System.out.println(nombre + apellidos + direccion + fechana + telefono + nombUsuario + contraseña);
                 conexion.desconectar();
                 }else{
@@ -149,6 +159,7 @@ public class Usuario {
                     contraseña = rs.getString("contrasena");
                     fechana = rs.getDate("fechanac");
                     tipo_usuario = rs.getString("tipoUsuario");
+                    idCarrito=idUsuario;
                 }else{
                     mensaje="Usuario o contraseña Inconrrectos";
                     //System.out.println(contraseña+" "+contraseña2); 

@@ -279,7 +279,7 @@ public class Producto {
                 descripcion = rs.getString("descripcion");
                 locacion = rs.getString("ubicacion");
                 cantidad = rs.getInt("cantidad");
-                precio = rs.getInt("Precio");
+                precio = rs.getDouble("Precio");
                 Imagen = rs.getBytes("img");
 
             }
